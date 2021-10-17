@@ -52,7 +52,7 @@ int read_utime() {
 //return utime field
 
 
-//fopen(/proc/<pid>/stat)
+//statFileu = fopen("/proc/<pid>/stat", "r")
 //14 utime
 //return utime
 }
@@ -71,7 +71,7 @@ int read_stime() {
 //return utime field
 
 
-//fopen(/proc/<pid>/stat)
+//statFiles = fopen("/proc/<pid>/stat", "r")
 //15 stime
 //return stime
 
