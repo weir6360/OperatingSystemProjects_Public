@@ -5,7 +5,41 @@
     Name of this file: c.c
     Description of the program: Handles the -c command for the 5ps
 */
+#include "p.h"
+#include "s.h"
+#include "t.h"
+#include "v.h"
+#include "c.h"
 
+int main(int argc, char *argv[]){
+
+int opt;	
+while((opt = getopt(argc, argv, “:if:lrx”)) != -1) 
+    { 
+        switch(opt) 
+        { 
+            case ‘p’: 
+            	printf("option: p");
+            case ‘s’: 
+            	printf("option: s");
+            case ‘t’: 
+            	printf("option: t"); 
+            case ‘v’: 
+            	printf("option: v"); 
+            case ‘c’:
+            	printf("option: c");
+            case ‘:’: 
+                printf(“option needs a value\n”); 
+                break; 
+            case ‘?’: 
+                printf(“unknown option: %c\n”, optopt);
+                break; 
+        } 
+    }
+}
+
+
+/*
 void send_commands
 
 int main() { 
@@ -33,4 +67,4 @@ int main() {
             break;
         }
     }
-}
+}*/

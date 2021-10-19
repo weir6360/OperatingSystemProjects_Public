@@ -19,6 +19,7 @@ information.
 #include <unistd.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <string.h>
 
 /*
 Function Name: t_return
@@ -28,13 +29,15 @@ Brief description of the task: calls read_stime() and read_utime() to get the ti
     and calls format_timestr(clock_ticks) to produce the desired formatted time string
 */
 
-const char* t_return(/*PID?*/) { 
-//call read_ctps
+const char* t_return(char* pid) { 
 //call format_timestr
 //return formatted timestring
-ctps = read_ctps();
-timeString = format_timestr(ctps);
-return timeString;
+char* stime = read_stime(pid);
+char* utime = read_utime(pid);
+char* ctime = strcat(stime, utime); // might need to do some funky stuff with string parsing
+//do funky math to get nice formatting
+char* ftime = ctime;
+return ftime;
 
 }
 
@@ -46,15 +49,17 @@ Brief description of the task: the function makes a system call to the stat file
     the value of the utime field. 
 */
 
-int read_utime() { 
+int read_utime(char* pid) { 
 //open stat file
 //read utime field
 //return utime field
 
-
-//statFileu = fopen("/proc/<pid>/stat", "r")
-//14 utime
-//return utime
+char* filestring1 = strcat("/proc/", pid);
+char* filestring2 = strcat(filestring1, "/stat");
+FILE* statFileu = fopen(filestring2, "r");
+//navigate file to value 14
+char* utime = "1000";//value 14
+return utime;
 }
 
 /*
@@ -65,50 +70,16 @@ Brief description of the task: the function makes a system call to the stat file
     the value of the stime field. 
 */
 
-int read_stime() { 
+int read_stime(char* pid) { 
 //open stat file
 //read utime field
 //return utime field
 
-
-//statFiles = fopen("/proc/<pid>/stat", "r")
-//15 stime
-//return stime
-
-}
-
-
-/*
-Function Name: read_ctps
-Input to the method: n/a
-Output(Return value): an integer representing the system-constant number of clock ticks per second 
-Brief description of the task: the function makes a system call for the number of clock ticks per second
-*/
-
-int read_ctps() { 
-//find and return clock ticks value for system, figure out what file/call for this
-
-//it's just 1 million? 
-}
-
-/*
-Function Name:
-Input to the method: < This should be in
-English and not list of variables from the
-function header>
-Output(Return value): < This should be in
-English and not the return type from the
-function header>
-Brief description of the task:
- */
-
-const char* format_timestr(clock_ticks){ 
-//clock ticks as input
-//call read_stime
-//call read_utime (not necessarially in that order)
-//add them together accordingly
-//format into nice looking string
-
+char* filestrings1 = strcat("/proc/", pid);
+char* filestrings2 = strcat(filestrings1, "/stat");
+FILE* statFiles = fopen(filestrings2, "r");
+char* stime = "2000";//value 15
+return stime;
 
 }
 
