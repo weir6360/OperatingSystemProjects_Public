@@ -28,14 +28,13 @@ Brief description of the task: calls read_stime() and read_utime() to get the ti
     and calls format_timestr(clock_ticks) to produce the desired formatted time string
 */
 
-const char* t_return(char* pid) { 
-    //call format_timestr
-    //return formatted timestring
-    char* stime = read_stime(pid);
-    char* utime = read_utime(pid);
-    char* ctime = strcat(stime, utime); // might need to do some funky stuff with string parsing
+const char* t_return(int pid) { 
+    int stime = read_stime(pid);
+    int utime = read_utime(pid);
+    int ctime = stime + utime;
     //do funky math to get nice formatting
-    char* ftime = ctime;
+    char* ftime;
+    sprintf(ftime, "%i", ctime);
     return ftime;
 
 }
@@ -48,14 +47,16 @@ Brief description of the task: the function makes a system call to the stat file
     the value of the utime field. 
 */
 
-int read_utime(char* pid) { 
-
-char* filestring1 = strcat("/proc/", pid);
+int read_utime(int pid) { 
+char* pidstr;
+sprintf(pidstr, "%i", pid);
+char* filestring1 = strcat("/proc/", pidstr);
 char* filestring2 = strcat(filestring1, "/stat");
 FILE* statFileu = fopen(filestring2, "r");
 //navigate file to value 14
 char* utime = "1000";//value 14
-return utime;
+int utimei = atoi(utime);
+return utimei;
 }
 
 /*
@@ -66,13 +67,15 @@ Brief description of the task: the function makes a system call to the stat file
     the value of the stime field. 
 */
 
-int read_stime(char* pid) { 
-
-char* filestrings1 = strcat("/proc/", pid);
+int read_stime(int pid) { 
+char* pidstr;
+sprintf(pidstr, "%i", pid);
+char* filestrings1 = strcat("/proc/", pidstr);
 char* filestrings2 = strcat(filestrings1, "/stat");
 FILE* statFiles = fopen(filestrings2, "r");
 char* stime = "2000";//value 15
-return stime;
+int stimei = atoi(stime);
+return stimei;
 
 }
 
