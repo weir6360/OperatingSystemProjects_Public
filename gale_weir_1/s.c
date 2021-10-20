@@ -20,6 +20,6 @@
 #include <unistd.h>
 #include <zconf.h>
 
-const char* s_return() { 
+const char* s_return(const char *pid_path, pid_data pdata) { 
      
 }

@@ -29,14 +29,14 @@ Brief description of the task: calls read_stime() and read_utime() to get the ti
 */
 
 const char* t_return(char* pid) { 
-//call format_timestr
-//return formatted timestring
-char* stime = read_stime(pid);
-char* utime = read_utime(pid);
-char* ctime = strcat(stime, utime); // might need to do some funky stuff with string parsing
-//do funky math to get nice formatting
-char* ftime = ctime;
-return ftime;
+    //call format_timestr
+    //return formatted timestring
+    char* stime = read_stime(pid);
+    char* utime = read_utime(pid);
+    char* ctime = strcat(stime, utime); // might need to do some funky stuff with string parsing
+    //do funky math to get nice formatting
+    char* ftime = ctime;
+    return ftime;
 
 }
 
