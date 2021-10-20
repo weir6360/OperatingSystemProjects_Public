@@ -6,15 +6,6 @@
     Description of the program: Handles the -t command for the 5ps
 */
 
-/*
-This information is found in the stat file in process's directory, looking at the "utime" field.
-Add to this to the system time, “stime” field . This is the total time consumed by the
-process. This time is represented in clock ticks. You must divide my number of clock
-ticks per second (system constant) to obtain the number of seconds. It should then be
-displayed in hours:min:seconds format. If this option is not present, do not display this
-information.
-*/
-
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -50,9 +41,6 @@ Brief description of the task: the function makes a system call to the stat file
 */
 
 int read_utime(char* pid) { 
-//open stat file
-//read utime field
-//return utime field
 
 char* filestring1 = strcat("/proc/", pid);
 char* filestring2 = strcat(filestring1, "/stat");
@@ -71,9 +59,6 @@ Brief description of the task: the function makes a system call to the stat file
 */
 
 int read_stime(char* pid) { 
-//open stat file
-//read utime field
-//return utime field
 
 char* filestrings1 = strcat("/proc/", pid);
 char* filestrings2 = strcat(filestrings1, "/stat");

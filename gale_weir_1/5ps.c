@@ -10,33 +10,68 @@
 #include "t.h"
 #include "v.h"
 #include "c.h"
+#include <getopt.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[]){
 
-int opt;	
-while((opt = getopt(argc, argv, “:if:lrx”)) != -1) 
+int opt;
+int pid = 1;	
+int s = 0;
+int t = 0;
+int v = 0;
+int c = 0;
+while((opt = getopt(argc, argv, "p:stvc")) != -1) 
     { 
         switch(opt) 
         { 
-            case ‘p’: 
-            	printf("option: p");
-            case ‘s’: 
-            	printf("option: s");
-            case ‘t’: 
-            	printf("option: t"); 
-            case ‘v’: 
-            	printf("option: v"); 
-            case ‘c’:
-            	printf("option: c");
-            case ‘:’: 
-                printf(“option needs a value\n”); 
-                break; 
-            case ‘?’: 
-                printf(“unknown option: %c\n”, optopt);
+            case 'p': 
+            	printf("\noption: p");
+            	pid = atoi(optarg);
+            	printf("pid: %i", pid);
+            	break;
+            case 's': 
+            	printf("\noption: s");
+            	s = 1;
+            	break;
+            case 't': 
+            	printf("\noption: t"); 
+            	t = 1;
+            	break;
+            case 'v': 
+            	printf("\noption: v"); 
+            	v = 1;
+            	break;
+            case 'c':
+            	printf("\noption: c");
+            	c = 1;
+            	break;
+            case '?': 
+                printf("\nunknown option: %c\n", optopt);
                 break; 
         } 
     }
+//1234: R time=00:03:14 sz=1234567 [myprog -x -y filel myoption]
+//5ps -p 1234 -s -t -c -v
+if(pid == 0){
+    printf("INVALID PID");
+    exit(0);
 }
+//s.c command passing pid sval = (s_return(pid);?)
+//const char* tval = t_return(pid);
+//cval = c_return(pid);
+//vval = v_return(pid);
+//printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
+//  printf(pid, tval);
+}
+
+
+
+
 
 
 /*
