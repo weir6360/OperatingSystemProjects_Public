@@ -3,13 +3,22 @@
     Assignment Number: 1
     Date of Submission:
     Name of this file: c.c
-    Description of the program: Handles the -t command for the 5ps
+    Description of the program: Handles the -t command for the 5ps, returning the formatted
+        time consumed by the process
 */
 
+#include "t.h"
+#include "statmParser.h"
+
+#include <ctype.h>
+#include <dirent.h>
+#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdint.h>
+#include <string.h>
 #include <sys/stat.h>
-#include <time.h>
+#include <unistd.h>
+#include <zconf.h>
 
 /*
 Function Name: t_return
@@ -60,15 +69,13 @@ int read_ctps() {
 }
 
 /*
-Function Name:
-Input to the method: < This should be in
-English and not list of variables from the
-function header>
-Output(Return value): < This should be in
-English and not the return type from the
-function header>
-Brief description of the task:
- */
+Function Name: format_timestr
+Input to the method: the final number of active clock ticks
+Output(Return value): a formatted timestring
+Brief description of the task: format_timestr takes clock_ticks, and uses it to calculate
+    the number of hours, then minutes, then seconds the program took. Once complete, format_timestr
+    then arranges them in a string, and returns that value. 
+*/
 
 const char* format_timestr(clock_ticks){ 
     
