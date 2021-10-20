@@ -70,6 +70,8 @@ if(pid == 0){
 //vval = v_return(pid);
 //printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
 //  printf(pid, tval);
+printf(s_return(pid));
+
 }
 
 
