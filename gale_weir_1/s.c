@@ -20,6 +20,23 @@
 #include <unistd.h>
 #include <zconf.h>
 
-const char* s_return(const char *pid_path, pid_data pdata) { 
-     
+const char* s_return(int pid) {
+    char progam_state
+    
+    //copies the contents at the file path /proc/<pid_path>/stat
+    char *stat_file_path
+    strcpy(stat_file_path, ("/proc/%d/stat", pid_path)); 
+    FILE *stat_file_pointer = fopen(stat_file_path, "r");
+    
+    if (stat_file_pointer == NULL) {
+        //failed state
+        return 1;
+    }
+
+    if (fscanf(state_file_pointer, "%*d %*s %c", program_state) < 1) {
+        return 1;
+    }
+
+    fclose(stat_file_pointer);
+    return program_state
 }
