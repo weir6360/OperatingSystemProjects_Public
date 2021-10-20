@@ -28,7 +28,15 @@ Brief description of the task: calls read_stime() and read_utime() to get the ti
     and calls format_timestr(clock_ticks) to produce the desired formatted time string
 */
 
-const char* t_return() { 
+const char* t_return(char* pid) { 
+//call format_timestr
+//return formatted timestring
+char* stime = read_stime(pid);
+char* utime = read_utime(pid);
+char* ctime = strcat(stime, utime); // might need to do some funky stuff with string parsing
+//do funky math to get nice formatting
+char* ftime = ctime;
+return ftime;
 
 }
 
@@ -40,8 +48,14 @@ Brief description of the task: the function makes a system call to the stat file
     the value of the utime field. 
 */
 
-int read_utime() { 
+int read_utime(char* pid) { 
 
+char* filestring1 = strcat("/proc/", pid);
+char* filestring2 = strcat(filestring1, "/stat");
+FILE* statFileu = fopen(filestring2, "r");
+//navigate file to value 14
+char* utime = "1000";//value 14
+return utime;
 }
 
 /*
@@ -52,19 +66,13 @@ Brief description of the task: the function makes a system call to the stat file
     the value of the stime field. 
 */
 
-int read_stime() { 
+int read_stime(char* pid) { 
 
-}
-
-
-/*
-Function Name: read_ctps
-Input to the method: n/a
-Output(Return value): an integer representing the system-constant number of clock ticks per second 
-Brief description of the task: the function makes a system call for the number of clock ticks per second
-*/
-
-int read_ctps() { 
+char* filestrings1 = strcat("/proc/", pid);
+char* filestrings2 = strcat(filestrings1, "/stat");
+FILE* statFiles = fopen(filestrings2, "r");
+char* stime = "2000";//value 15
+return stime;
 
 }
 
@@ -76,9 +84,4 @@ Brief description of the task: format_timestr takes clock_ticks, and uses it to 
     the number of hours, then minutes, then seconds the program took. Once complete, format_timestr
     then arranges them in a string, and returns that value. 
 */
-
-const char* format_timestr(clock_ticks){ 
-    
-}
-
 
