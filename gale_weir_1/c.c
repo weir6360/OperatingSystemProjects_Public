@@ -4,11 +4,10 @@
     Date of Submission:
     Name of this file: v.c
     Description of the program: Handles the -v command for the 5ps, reading the statm file
-        in order to display the amount of virtual memory being used. 
+        in order to display the original command line 
 */
 
 #include "v.h"
-#include "statmParser.h"
 
 #include <ctype.h>
 #include <dirent.h>
@@ -27,8 +26,6 @@ Output(Return value):
 Brief description of the task: 
 */
 
-//NEED TO UPDATE
-
 const char* c_return(int pid) { 
     char[256] command_statement;
     
@@ -37,14 +34,9 @@ const char* c_return(int pid) {
     strcpy(cmdline_file_path, ("/proc/%d/cmdline", pid)); 
     FILE *cmdline_file_pointer = fopen(cmdline_file_path, "r");
     
-    //Return a failed state if file pointer is invalid
-    if (cmdline_file_pointer == NULL) {
+    //Return a failed state if file pointer is invalid or the file cannot be scanned
+    if (cmdline_file_pointer == NULL or fscanf(cmdline_file_pointer, "%*d %*s %c", command_statement) < 1) {
         //failed state
-        return 1;
-    }
-
-    //Return a failed state if the file cannot be scanned
-    if (fscanf(cmdline_file_pointer, "%*d %*s %c", command_statement) < 1) {
         return 1;
     }
 

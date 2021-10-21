@@ -8,7 +8,6 @@
 */
 
 #include "s.h"
-#include "statmParser.h"
 
 #include <ctype.h>
 #include <dirent.h>

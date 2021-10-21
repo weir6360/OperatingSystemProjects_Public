@@ -8,7 +8,6 @@
 */
 
 #include "v.h"
-#include "statmParser.h"
 
 #include <ctype.h>
 #include <dirent.h>
@@ -24,7 +23,7 @@
 Function Name: s_return
 Input to the method: pid: the process id for the current process
 Output(Return value): the virtual memory used by the process with id pid
-Brief description of the task: 
+Brief description of the task: v_return parses the statm file for its contents
 */
 
 const char* v_return(int pid) { 
@@ -35,14 +34,9 @@ const char* v_return(int pid) {
     strcpy(statm_file_path, ("/proc/%d/statm", pid)); 
     FILE *statm_file_pointer = fopen(statm_file_path, "r");
     
-    //Return a failed state if file pointer is invalid
-    if (statm_file_pointer == NULL) {
+    //Return a failed state if file pointer is invalid or the file cannot be read
+    if (statm_file_pointer == NULL or fscanf(statm_file_pointer, "%*d %*s %c", virtual_memory) < 1) {
         //failed state
-        return 1;
-    }
-
-    //Return a failed state if the file cannot be scanned
-    if (fscanf(statm_file_pointer, "%*d %*s %c", virtual_memory) < 1) {
         return 1;
     }
 
