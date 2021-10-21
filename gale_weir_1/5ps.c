@@ -6,6 +6,8 @@
     Description of the program: Handles user input of the requested commands, as well as
         compiling and displaying the proper output
 */
+
+#include "p.h"
 #include "s.h"
 #include "t.h"
 #include "v.h"
@@ -26,8 +28,8 @@ Function Name: main
 Input to the method: 
     argc: number of commands being passed into program
     argv: list of commands being passed into the program
-Output(Return value): 
-Brief description of the task:
+Output(Return value): returns a 1 if it runs into a fail state, otherwise exits upon completion
+Brief description of the task: uses getopt to mark flags if a given command was used, then runs through flagged commands sequentially 
 */
 int main(int argc, char *argv[]) {
     int opt;
@@ -67,23 +69,30 @@ int main(int argc, char *argv[]) {
         } 
     }
 
-//1234: R time=00:03:14 sz=1234567 [myprog -x -y filel myoption]
-//5ps -p 1234 -s -t -c -v
     if (pid == 0) {
         printf("Provided PID is invalid, closing program");
         exit(0);
     }
-//s.c command passing pid sval = (s_return(pid);?)
-const char* tval;
-//char* sval;
-tval = t_return(pid);
-//sval = s_return(pid);
-//cval = c_return(pid);
-//vval = v_return(pid);
-//printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
-printf("%s", tval);
-//printf(sval);
 
+    //if-statements to check each flag
+    if (s == 1) { 
+        printf("%s", s_return(pid))
+    }
+    
+    if (t == 1) {
+        printf("%s", t_return(pid))
+    }
+
+    if (v == 1) {
+        printf("%s", v_return(pid))
+    }
+
+    if (c == 1) {
+        printf("%s", c_return(pid))
+
+    }
+
+    return 0
 }
 
 

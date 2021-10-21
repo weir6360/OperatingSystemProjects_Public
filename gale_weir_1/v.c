@@ -35,7 +35,7 @@ const char* v_return(int pid) {
     FILE *statm_file_pointer = fopen(statm_file_path, "r");
     
     //Return a failed state if file pointer is invalid or the file cannot be read
-    if (statm_file_pointer == NULL or fscanf(statm_file_pointer, "%s", virtual_memory) < 1) {
+    if (statm_file_pointer == NULL || fscanf(statm_file_pointer, "%s", virtual_memory) < 1) {
         //failed state
         return "failed to retrieve virtual memory";
     }

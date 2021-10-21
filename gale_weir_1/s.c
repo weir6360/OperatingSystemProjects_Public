@@ -36,7 +36,7 @@ const char* s_return(int pid) {
     FILE *stat_file_pointer = fopen(stat_file_path, "r");
     
     //Return a failed state if file pointer is invalid or the file cannot be read
-    if (stat_file_pointer == NULL or fscanf(stat_file_pointer, "%s", program_state) < 1) {
+    if (stat_file_pointer == NULL || fscanf(stat_file_pointer, "%s", program_state) < 1) {
         //failed state
         return "failed to retrieve state";
     }

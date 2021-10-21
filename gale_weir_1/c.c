@@ -23,7 +23,8 @@
 Function Name: c_return
 Input to the method: pid: the process id for the current process
 Output(Return value): the original command statement of the program associated with the pid
-Brief description of the task: 
+Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
+    program_state, checks to make sure specified file exists, and if so returns the program_state
 */
 
 const char* c_return(int pid) { 
@@ -34,8 +35,12 @@ const char* c_return(int pid) {
     strcpy(cmdline_file_path, ("/proc/%d/cmdline", pid)); 
     FILE *cmdline_file_pointer = fopen(cmdline_file_path, "r");
     
+    if cmdline_file_pointer == NULL) { 
+        return "failed to find cmdline file"
+    }
+
     //Return a failed state if file pointer is invalid or the file cannot be scanned
-    if (cmdline_file_pointer == NULL or fscanf(cmdline_file_pointer, "%*s\t%s", command_statement) < 1) {
+    if (cmdline_file_pointer == NULL || fscanf(cmdline_file_pointer, "%*s\t%s", command_statement) < 1) {
         //failed state
          return "failed to retrieve state";
     }

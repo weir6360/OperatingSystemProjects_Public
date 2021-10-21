@@ -2,7 +2,7 @@
     Author: Alex Gale, Gabe Weir
     Assignment Number: 1
     Date of Submission:
-    Name of this file: c.c
+    Name of this file: t.c
     Description of the program: Handles the -t command for the 5ps, returning the formatted
         time consumed by the process
 */
@@ -21,7 +21,7 @@
 
 /*
 Function Name: t_return
-Input to the method: n/a
+Input to the method: pid: the provided pid
 Output(Return value): a formatted time string (hours::mins::sec)
 Brief description of the task: calls read_stime() and read_utime() to get the time passed, 
     and calls format_timestr(clock_ticks) to produce the desired formatted time string
@@ -47,7 +47,7 @@ const char* t_return(int pid) {
 
 /*
 Function Name: read_utime
-Input to the method: n/a
+Input to the method: pid: 
 Output(Return value): an integer representing the number of click ticks needed to run this program
 Brief description of the task: the function makes a system call to the stat file, reading and returning
     the value of the utime field. 
