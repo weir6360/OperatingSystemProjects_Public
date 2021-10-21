@@ -39,32 +39,39 @@ int main(int argc, char *argv[]) {
     int v = 0;
     int c = 0;
 
+    char s_output
+    char* t_output
+    int v_output
+    char* c_output
+    char* final_output
+
+
     //while getopt is processing commands, loop through inputs to find and flag commands as accepted
     while((opt = getopt(argc, argv, "p:stvc")) != -1) { 
         switch(opt) { 
             case 'p': 
-            	printf("\noption: p");      
+//            	printf("\noption: p");      
             	pid = atoi(optarg);         //store provided pid
-            	printf("pid: %i", pid);
+//            	printf("pid: %i", pid);
             	break;
             case 's': 
-            	printf("\noption: s");
+//            	printf("\noption: s");
             	s = 1;
             	break;
             case 't': 
-            	printf("\noption: t"); 
+//            	printf("\noption: t"); 
             	t = 1;
             	break;
             case 'v': 
-            	printf("\noption: v"); 
+//            	printf("\noption: v"); 
             	v = 1;
             	break;
             case 'c':
-            	printf("\noption: c");
+//            	printf("\noption: c");
             	c = 1;
             	break;
             case '?': 
-                printf("\nunknown option: %c\n", optopt);
+//                printf("\nunknown option: %c\n", optopt);
                 break; 
         } 
     }
@@ -74,23 +81,47 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 
-    //if-statements to check each flag
+    //check flag on s
     if (s == 1) { 
-        printf("%s", s_return(pid))
+        s_output = s_return(pid)    
     }
-    
-    if (t == 1) {
-        printf("%s", t_return(pid))
+    else if (s != 1) { 
+        s_output = ""
     }
 
+    //check flag on c
+    if (c == 1) {
+        c_output = c_return(pid)
+    }
+    else if (c != 1) {
+        c_output = ""
+    }
+    
+    //check flag on v
     if (v == 1) {
         printf("%s", v_return(pid))
     }
-
-    if (c == 1) {
-        printf("%s", c_return(pid))
-
+    else if (v != 1) {
+        v_output = -1
     }
+
+    //check flag on t
+    if (t == 1) {
+        t_output = t_return(pid)
+    }
+    else if (t != 1)
+    { 
+        t_output = ""
+    }
+
+    if v_output == -1 {
+        final_output = ("%d: %c %s %s" pid, s_output, t_output, c_output)
+    }
+    else { 
+        final_output = ("%d: %c %s %d %s" pid, s_output, t_output, v_output, c_output)
+    }
+
+    printf(final_output)
 
     return 0
 }
