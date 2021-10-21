@@ -1,9 +1,9 @@
 /*
-    Author: Gabe Weir
+    Author: Alex Gale, Gabe Weir
     Assignment Number: 1
     Date of Submission:
-    Name of this file: v.c
-    Description of the program: Handles the -v command for the 5ps, reading the statm file
+    Name of this file: c.c
+    Description of the program: Handles the -c command for the 5ps, reading the statm file
         in order to display the original command line 
 */
 
@@ -35,7 +35,7 @@ const char* c_return(int pid) {
     FILE *cmdline_file_pointer = fopen(cmdline_file_path, "r");
     
     //Return a failed state if file pointer is invalid or the file cannot be scanned
-    if (cmdline_file_pointer == NULL or fscanf(cmdline_file_pointer, "%*d %*s %c", command_statement) < 1) {
+    if (cmdline_file_pointer == NULL or fscanf(cmdline_file_pointer, "%*s\t%s", command_statement) < 1) {
         //failed state
         return 1;
     }

@@ -22,7 +22,7 @@
 /*
 Function Name: s_return
 Input to the method: pid: the process id for the current process
-Output(Return value): 
+Output(Return value): the program associated with the pid's state, either 
 Brief description of the task: 
 */
 
@@ -41,7 +41,7 @@ const char* s_return(int pid) {
     }
 
     //Return a failed state if the file cannot be scanned
-    if (fscanf(state_file_pointer, "%*d %*s %c", program_state) < 1) {
+    if (fscanf(state_file_pointer, "%*s %*s %c", program_state) < 1) {
         return 1;
     }
 
