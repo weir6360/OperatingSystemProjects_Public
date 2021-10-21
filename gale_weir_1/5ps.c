@@ -74,15 +74,15 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 //s.c command passing pid sval = (s_return(pid);?)
-const char* tval;
-//char* sval;
-tval = t_return(pid);
-//sval = s_return(pid);
+//const char* tval;
+const char* sval;
+//tval = t_return(pid);
+sval = s_return(pid);
 //cval = c_return(pid);
 //vval = v_return(pid);
 //printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
-printf("time=%s", tval);
-//printf(sval);
+//printf("time=%s", tval);
+printf("%s", sval);
 
 }
 
