@@ -64,12 +64,14 @@ if(pid == 0){
     exit(0);
 }
 //s.c command passing pid sval = (s_return(pid);?)
-const char* tval;
-tval = t_return(pid);
+//const char* tval;
+//tval = t_return(pid);
 //cval = c_return(pid);
 //vval = v_return(pid);
 //printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
 //  printf(pid, tval);
+printf(s_return(pid));
+
 }
 
 
