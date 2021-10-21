@@ -35,12 +35,14 @@ const char* t_return(int pid) {
     stime = read_stime(pid);
     int utime;
     utime = read_utime(pid);
-    float ctime;
+    int ctime;
     printf("\n%d \n%d\n", stime, utime);
-    ctime = (float) ((utime + stime) / sysconf(_SC_CLK_TCK));
-    
+    ctime =  ((utime + stime) / sysconf(_SC_CLK_TCK));
+    long unsigned int hours = ctime/3600;
+    long unsigned int minutes = (ctime % 3600) / 60;
+    long unsigned int seconds = (ctime % 3600) % 60;
     char ftime[100];
-    sprintf(ftime, "%f", ctime);
+    sprintf(ftime, "%lu:%lu:%lu", hours, minutes, seconds);
     char *ftimeptr = ftime;
     return ftimeptr;
 }

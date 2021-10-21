@@ -31,15 +31,29 @@ const char* s_return(int pid) {
     char* program_state;
     
     //copies the contents at the file path /proc/<pid_path>/stat
-    char *stat_file_path;
-    strcpy(stat_file_path, ("/proc/%d/stat", pid)); 
-    FILE *stat_file_pointer = fopen(stat_file_path, "r");
-    
+    char pidstr[100];
+    sprintf(pidstr, "%d", pid);
+    char filestring1[100] = "/proc/"; 
+    strcat(filestring1, pidstr);
+    char filestring2[100] = "/stat";
+    strcat(filestring1, filestring2);
+    FILE* stat_file_pointer = fopen(filestring1, "r");
+    int i;
+    for(i = 0; i<=2; i++){
+        fscanf(stat_file_pointer, "%*s");
+    }
+
+    if (stat_file_pointer == NULL){
+        return "file not found";
+        
+    }
     //Return a failed state if file pointer is invalid or the file cannot be read
     if (stat_file_pointer == NULL || fscanf(stat_file_pointer, "%s", program_state) < 1) {
         //failed state
+        printf("%s", program_state);
         return "failed to retrieve state";
     }
+    
 
     fclose(stat_file_pointer);
     return program_state;
