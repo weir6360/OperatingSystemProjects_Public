@@ -6,8 +6,6 @@
     Description of the program: Handles user input of the requested commands, as well as
         compiling and displaying the proper output
 */
-
-#include "p.h"
 #include "s.h"
 #include "t.h"
 #include "v.h"
@@ -76,13 +74,15 @@ int main(int argc, char *argv[]) {
         exit(0);
     }
 //s.c command passing pid sval = (s_return(pid);?)
-//const char* tval;
-//tval = t_return(pid);
+const char* tval;
+//char* sval;
+tval = t_return(pid);
+//sval = s_return(pid);
 //cval = c_return(pid);
 //vval = v_return(pid);
 //printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
-//  printf(pid, tval);
-    printf(s_return(pid));
+printf("%s", tval);
+//printf(sval);
 
 }
 

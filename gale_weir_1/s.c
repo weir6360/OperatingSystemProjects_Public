@@ -28,7 +28,7 @@ Brief description of the task: s_return parses the stat file for the program's p
 */
 
 const char* s_return(int pid) {
-    char[256] program_state;
+    char* program_state;
     
     //copies the contents at the file path /proc/<pid_path>/stat
     char *stat_file_path;

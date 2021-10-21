@@ -28,14 +28,21 @@ Brief description of the task: calls read_stime() and read_utime() to get the ti
 */
 
 const char* t_return(int pid) { 
-    int stime = read_stime(pid);
-    int utime = read_utime(pid);
-    int ctime = stime + utime;
-    //do funky math to get nice formatting
-    char* ftime;
-    sprintf(ftime, "%i", ctime);
-    return ftime;
+    
 
+
+    int stime;
+    stime = read_stime(pid);
+    int utime;
+    utime = read_utime(pid);
+    float ctime;
+    printf("\n%d \n%d\n", stime, utime);
+    ctime = (float) ((utime + stime) / sysconf(_SC_CLK_TCK));
+    
+    char ftime[100];
+    sprintf(ftime, "%f", ctime);
+    char *ftimeptr = ftime;
+    return ftimeptr;
 }
 
 /*
@@ -47,15 +54,28 @@ Brief description of the task: the function makes a system call to the stat file
 */
 
 int read_utime(int pid) { 
-char* pidstr;
-sprintf(pidstr, "%i", pid);
-char* filestring1 = strcat("/proc/", pidstr);
-char* filestring2 = strcat(filestring1, "/stat");
-FILE* statFileu = fopen(filestring2, "r");
-//navigate file to value 14
-char* utime = "1000";//value 14
-int utimei = atoi(utime);
-return utimei;
+    char pidstr[100];
+    sprintf(pidstr, "%d", pid);
+    char filestring1[100] = "/proc/"; 
+    strcat(filestring1, pidstr);
+    char filestring2[100] = "/stat";
+    strcat(filestring1, filestring2);
+    FILE* statFileu = fopen(filestring1, "r");
+    if(statFileu != NULL){
+        //for loop 13 times, to get to value 14
+        int i;
+        for(i = 0; i<=13; i++){
+            fscanf(statFileu, "%*s");
+        }
+        int utime;
+        fscanf(statFileu, "%d", &utime);
+        fclose(statFileu);
+        return utime;
+
+    }
+    fclose(statFileu);
+    return 0;
+    
 }
 
 /*
@@ -67,23 +87,28 @@ Brief description of the task: the function makes a system call to the stat file
 */
 
 int read_stime(int pid) { 
-char* pidstr;
-sprintf(pidstr, "%i", pid);
-char* filestrings1 = strcat("/proc/", pidstr);
-char* filestrings2 = strcat(filestrings1, "/stat");
-FILE* statFiles = fopen(filestrings2, "r");
-char* stime = "2000";//value 15
-int stimei = atoi(stime);
-return stimei;
+    char pidstr[100];
+    sprintf(pidstr, "%d", pid);
+    char filestring1[100] = "/proc/"; 
+    strcat(filestring1, pidstr);
+    char filestring2[100] = "/stat";
+    strcat(filestring1, filestring2);
+    FILE* statFiles = fopen(filestring1, "r");
+    if(statFiles != NULL){
+        //for loop 14 times, to get to value 15
+        int i;
+        for(i = 0; i<=14; i++){
+            fscanf(statFiles, "%*s");
+        }
+        int stime;
+        fscanf(statFiles, "%d", &stime);
+        fclose(statFiles);
+        return stime;
+
+    }
+
+    fclose(statFiles);
+    return 0;
+    
 
 }
-
-/*
-Function Name: format_timestr
-Input to the method: the final number of active clock ticks
-Output(Return value): a formatted timestring
-Brief description of the task: format_timestr takes clock_ticks, and uses it to calculate
-    the number of hours, then minutes, then seconds the program took. Once complete, format_timestr
-    then arranges them in a string, and returns that value. 
-*/
-
