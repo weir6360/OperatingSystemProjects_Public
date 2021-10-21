@@ -81,7 +81,7 @@ tval = t_return(pid);
 //cval = c_return(pid);
 //vval = v_return(pid);
 //printf(pid,": ", sval, " time=", tval, " sz=", vval, " ", cval);
-printf("%s", tval);
+printf("time=%s", tval);
 //printf(sval);
 
 }
