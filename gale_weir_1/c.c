@@ -22,7 +22,7 @@
 /*
 Function Name: c_return
 Input to the method: pid: the process id for the current process
-Output(Return value): 
+Output(Return value): the original command statement of the program associated with the pid
 Brief description of the task: 
 */
 
@@ -37,7 +37,7 @@ const char* c_return(int pid) {
     //Return a failed state if file pointer is invalid or the file cannot be scanned
     if (cmdline_file_pointer == NULL or fscanf(cmdline_file_pointer, "%*s\t%s", command_statement) < 1) {
         //failed state
-        return 1;
+         return "failed to retrieve state";
     }
 
     fclose(cmdline_file_pointer);

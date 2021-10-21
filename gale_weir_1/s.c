@@ -23,7 +23,8 @@
 Function Name: s_return
 Input to the method: pid: the process id for the current process
 Output(Return value): the program associated with the pid's state, either 
-Brief description of the task: 
+Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
+    program_state, checks to make sure specified file exists, and if so returns the program_state
 */
 
 const char* s_return(int pid) {
@@ -34,15 +35,10 @@ const char* s_return(int pid) {
     strcpy(stat_file_path, ("/proc/%d/stat", pid)); 
     FILE *stat_file_pointer = fopen(stat_file_path, "r");
     
-    //Return a failed state if file pointer is invalid
-    if (stat_file_pointer == NULL) {
+    //Return a failed state if file pointer is invalid or the file cannot be read
+    if (stat_file_pointer == NULL or fscanf(stat_file_pointer, "%s", program_state) < 1) {
         //failed state
-        return 1;
-    }
-
-    //Return a failed state if the file cannot be scanned
-    if (fscanf(state_file_pointer, "%*s %*s %c", program_state) < 1) {
-        return 1;
+        return "failed to retrieve state";
     }
 
     fclose(stat_file_pointer);
