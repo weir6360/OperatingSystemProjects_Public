@@ -27,7 +27,7 @@ Brief description of the task: s_return parses the stat file for the program's p
     program_state, checks to make sure specified file exists, and if so returns the program_state
 */
 
-const char* s_return(int pid) {
+char s_return(int pid) {
     char* program_state;
     
     //copies the contents at the file path /proc/<pid_path>/stat
@@ -38,23 +38,21 @@ const char* s_return(int pid) {
     char filestring2[100] = "/stat";
     strcat(filestring1, filestring2);
     FILE* stat_file_pointer = fopen(filestring1, "r");
-    int i;
-    for(i = 0; i<=2; i++){
-        fscanf(stat_file_pointer, "%*s");
-    }
+    
 
     if (stat_file_pointer == NULL){
-        return "file not found";
+        return 0x48;
         
     }
+    char stat;
     //Return a failed state if file pointer is invalid or the file cannot be read
-    if (stat_file_pointer == NULL || fscanf(stat_file_pointer, "%s", program_state) < 1) {
+    if (fscanf(stat_file_pointer, "%*u %*s %c", &stat) < 1) {
         //failed state
-        printf("%s", program_state);
-        return "failed to retrieve state";
+        printf("%c", stat);
+        return 0x48;
     }
     
 
     fclose(stat_file_pointer);
-    return program_state;
+    return stat;
 }

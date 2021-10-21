@@ -26,20 +26,31 @@ Output(Return value): the virtual memory used by the process with id pid
 Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
     program_state, checks to make sure specified file exists, and if so returns the program_state*/
 
-const char* v_return(int pid) { 
-    char[256] virtual_memory;
+int v_return(int pid) { 
+    int virtual_memory;
     
     //copies the contents at the file path /proc/<pid_path>/stat
-    char *statm_file_path;
-    strcpy(statm_file_path, ("/proc/%d/statm", pid)); 
-    FILE *statm_file_pointer = fopen(statm_file_path, "r");
+    char pidstr[100];
+    sprintf(pidstr, "%d", pid);
+    char filestring1[100] = "/proc/"; 
+    strcat(filestring1, pidstr);
+    char filestring2[100] = "/stat";
+    strcat(filestring1, filestring2);
+    FILE* statm_file_pointer = fopen(filestring1, "r");
     
     //Return a failed state if file pointer is invalid or the file cannot be read
-    if (statm_file_pointer == NULL || fscanf(statm_file_pointer, "%s", virtual_memory) < 1) {
-        //failed state
-        return "failed to retrieve virtual memory";
+    if(statm_file_pointer != NULL){
+        //for loop 22 times, to get to value 23
+        int i;
+        for(i = 0; i<=22; i++){
+            fscanf(statm_file_pointer, "%*s");
+        }
+        fscanf(statm_file_pointer, "%d", &virtual_memory);
+        fclose(statm_file_pointer);
+        return virtual_memory;
+
     }
 
     fclose(statm_file_pointer);
-    return virtual_memory;
+    return 0;
 }

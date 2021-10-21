@@ -6,4 +6,4 @@
     Description of the program: Header for v.c to be used by 5ps.c
 */
 
-const char* v_return(int pid);
+int v_return(int pid);
