@@ -8,5 +8,3 @@
 const char* t_return(int pid);
 int read_utime(int pid);
 int read_stime(int pid);
-
- const char* t_return();

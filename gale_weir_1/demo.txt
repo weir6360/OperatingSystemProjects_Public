@@ -1,9 +1,11 @@
 nope@nope-VirtualBox:~/Desktop/GitKraken/OperatingSystemProjects_Public/gale_weir_1$ ./a.out -p1 -s -t -c -v
 
 1: S time=0:0:8 sz=2842 [/sbin/init]
+
 nope@nope-VirtualBox:~/Desktop/GitKraken/OperatingSystemProjects_Public/gale_weir_1$ ./a.out -p2 -s -t -c -v
 
 2: S time=0:0:0 sz=0 [failed to retrieve state]
+
 nope@nope-VirtualBox:~/Desktop/GitKraken/OperatingSystemProjects_Public/gale_weir_1$ ./a.out -p6 -s -t -c -v
 
 6: I time=0:0:0 sz=0 [failed to retrieve state]
