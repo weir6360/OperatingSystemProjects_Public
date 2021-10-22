@@ -7,7 +7,6 @@
         compiling and displaying the proper output
 */
 
-#include "p.h"
 #include "s.h"
 #include "t.h"
 #include "v.h"
@@ -39,11 +38,11 @@ int main(int argc, char *argv[]) {
     int v = 0;
     int c = 0;
 
-    char s_output
-    char* t_output
-    int v_output
-    char* c_output
-    char* final_output
+    char s_output;
+    const char* t_output;
+    int v_output;
+    char* c_output;
+    char final_output[1000];
 
 
     //while getopt is processing commands, loop through inputs to find and flag commands as accepted
@@ -83,47 +82,47 @@ int main(int argc, char *argv[]) {
 
     //check flag on s
     if (s == 1) { 
-        s_output = s_return(pid)    
+        s_output = s_return(pid);    
     }
     else if (s != 1) { 
-        s_output = ""
+        s_output = 0;
     }
 
     //check flag on c
     if (c == 1) {
-        c_output = c_return(pid)
+        c_output = c_return(pid);
     }
     else if (c != 1) {
-        c_output = ""
+        c_output = "";
     }
     
     //check flag on v
     if (v == 1) {
-        printf("%s", v_return(pid))
+        v_output = v_return(pid);
     }
     else if (v != 1) {
-        v_output = -1
+        v_output = -1;
     }
 
     //check flag on t
     if (t == 1) {
-        t_output = t_return(pid)
+        t_output = t_return(pid);
     }
     else if (t != 1)
     { 
-        t_output = ""
+        t_output = "";
     }
 
-    if v_output == -1 {
-        final_output = ("%d: %c %s %s" pid, s_output, t_output, c_output)
+    if (v_output == -1) {
+        sprintf(final_output, "\n%d: %c %s %s", pid, s_output, t_output, c_output);
     }
     else { 
-        final_output = ("%d: %c %s %d %s" pid, s_output, t_output, v_output, c_output)
+        sprintf(final_output, "\n%d: %c time=%s sz=%d [%s]\n", pid, s_output, t_output, v_output, c_output);
     }
 
-    printf(final_output)
+    printf("%s", final_output);
 
-    return 0
+    return 0;
 }
 
 

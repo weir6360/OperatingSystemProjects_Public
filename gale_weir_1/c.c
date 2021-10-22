@@ -39,18 +39,17 @@ char* c_return(int pid) {
     strcat(filestring1, filestring2);
     FILE* cmdline_file_pointer = fopen(filestring1, "r");
     
-    if cmdline_file_pointer == NULL) { 
-        return "failed to find cmdline file"
+    if (cmdline_file_pointer == NULL) { 
+        return "failed to find cmdline file";
     }
 
     //Return a failed state if file pointer is invalid or the file cannot be scanned
-    if (cmdline_file_pointer == NULL || fscanf(cmdline_file_pointer, "%*s\t%s", command_statement) < 1) {
+    if (cmdline_file_pointer == NULL || fscanf(cmdline_file_pointer, "%s", command_statement) < 1) {
         //failed state
-        printf("%s", command_statement);
          return "failed to retrieve state";
     }
-
     fclose(cmdline_file_pointer);
-    char *command_return = command_statement;
+    char *command_return;
+    sprintf(command_return, "%s", command_statement);
     return command_return;
 }

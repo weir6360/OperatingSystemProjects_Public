@@ -36,7 +36,6 @@ const char* t_return(int pid) {
     int utime;
     utime = read_utime(pid);
     int ctime;
-    printf("\n%d \n%d\n", stime, utime);
     ctime =  ((utime + stime) / sysconf(_SC_CLK_TCK));
     long unsigned int hours = ctime/3600;
     long unsigned int minutes = (ctime % 3600) / 60;
