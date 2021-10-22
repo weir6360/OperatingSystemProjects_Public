@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 1
-    Date of Submission:
+    Date of Submission: 10/21/21
     Name of this file: t.c
     Description of the program: Handles the -t command for the 5ps, returning the formatted
         time consumed by the process

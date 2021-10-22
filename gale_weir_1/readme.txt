@@ -20,5 +20,6 @@ options:
 
 notes: 
     
-    the -t command has, from testing, often returned only 7 seconds for different pids
-    the -t command can occasionally return segmentation faults
+    5ps often hits segmentation faults, depending on the PID entered. we suspect this is due to entering the PID of an important process, where the values are protected and inaccessable.
+    The time return is very often 00:00:00, though this is likely because the process took less than a second to complete, because computers are fast
+    the command-line command that started the process doesn't seem to work most of the time, we do not know how the cmdline file is formatted, and cannot make a parser as such. in testing it did work on the test machine, on PID 1.

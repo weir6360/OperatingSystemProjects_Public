@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 1
-    Date of Submission:
+    Date of Submission:10/21/21
     Name of this file: c.c
     Description of the program: Handles the -c command for the 5ps, reading the statm file
         in order to display the original command line 

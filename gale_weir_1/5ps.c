@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 1
-    Date of Submission:
+    Date of Submission: 10/21/21
     Name of this file: 5ps.c
     Description of the program: Handles user input of the requested commands, as well as
         compiling and displaying the proper output
@@ -47,29 +47,22 @@ int main(int argc, char *argv[]) {
     //while getopt is processing commands, loop through inputs to find and flag commands as accepted
     while((opt = getopt(argc, argv, "p:stvc")) != -1) { 
         switch(opt) { 
-            case 'p': 
-//            	printf("\noption: p");      
+            case 'p':   
             	pid = atoi(optarg);         //store provided pid
-//            	printf("pid: %i", pid);
             	break;
             case 's': 
-//            	printf("\noption: s");
             	s = 1;
             	break;
             case 't': 
-//            	printf("\noption: t"); 
             	t = 1;
             	break;
             case 'v': 
-//            	printf("\noption: v"); 
             	v = 1;
             	break;
             case 'c':
-//            	printf("\noption: c");
             	c = 1;
             	break;
             case '?': 
-//                printf("\nunknown option: %c\n", optopt);
                 break; 
         } 
     }
@@ -111,9 +104,9 @@ int main(int argc, char *argv[]) {
     { 
         t_output = "";
     }
-
+    //format output
     if (v_output == -1) {
-        sprintf(final_output, "\n%d: %c %s %s", pid, s_output, t_output, c_output);
+        sprintf(final_output, "\n%d: %c time=%s [%s]\n", pid, s_output, t_output, c_output);
     }
     else { 
         sprintf(final_output, "\n%d: %c time=%s sz=%d [%s]\n", pid, s_output, t_output, v_output, c_output);

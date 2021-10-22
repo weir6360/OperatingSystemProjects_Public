@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 1
-    Date of Submission:
+    Date of Submission:10/21/21
     Name of this file: v.c
     Description of the program: Handles the -v command for the 5ps, reading the statm file
         in order to display the amount of virtual memory being used. 
@@ -37,7 +37,7 @@ int v_return(int pid) {
     strcat(filestring1, filestring2);
     FILE* statm_file_pointer = fopen(filestring1, "r");
     
-    //Return a failed state if file pointer is invalid or the file cannot be read
+    //if the file is not null, read memory usage
     if(statm_file_pointer != NULL){
         //for loop 22 times, to get to value 23
         int i;

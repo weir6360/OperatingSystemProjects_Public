@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 1
-    Date of Submission:
+    Date of Submission: 10/21/21
     Name of this file: c.c
     Description of the program: Handles the -s command for the 5ps, returning the single
         character state information about the process. 
@@ -47,7 +47,6 @@ char s_return(int pid) {
     //Return a failed state if file pointer is invalid or the file cannot be read
     if (fscanf(stat_file_pointer, "%*u %*s %c", &stat) < 1) {
         //failed state
-        printf("%c", stat);
         return 0x48;
     }
     
