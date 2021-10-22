@@ -17,7 +17,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <zconf.h>
 
 /*
 Function Name: c_return
