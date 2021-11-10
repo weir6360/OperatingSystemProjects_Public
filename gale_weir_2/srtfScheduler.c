@@ -62,5 +62,6 @@ int main(int argc, char *argv[]){
     printf("%d, %d, %d\n", processes[0][0],processes[0][1],processes[0][2]);
     printf("%d, %d, %d\n", processes[1][0],processes[1][1],processes[1][2]);
     return 0;
+    
 }
 
