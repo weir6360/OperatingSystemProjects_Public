@@ -11,130 +11,131 @@
 #include <stdio.h>
 #include <string.h>
 #include "child.h"
-#include "srtfScheduler.c"
+#include "srtfScheduler.h"
 #include "timer.h"
 
-/*
-Function Name: s_return
-Input to the method: pid: the process id for the current process
-Output(Return value): the program associated with the pid's state, either 
-Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
-    program_state, checks to make sure specified file exists, and if so returns the program_state
-*/
+
 int count_lines(char* filename) {
 int **processes;
 int lines;
 int time;
-int currentProcess;
+int running_process;
 
-int countlines(char* filename){
-    FILE *fileReader = fopen(filename, "r");
-    if(fileReader == NULL){
+
+/*
+Function Name: 
+Input to the method: 
+Output(Return value):
+Brief description of the task: s
+*/
+int count_lines(char* filename) {
+    FILE *file_reader = fopen(filename, "r");
+    if(file_reader == NULL) {
         printf("File not found");
         exit(0);
     }
-    char bunkStr[100];
-    fgets(bunkStr, 100, fileReader);
+    char header_str[100];
+    fgets(header_str, 100, file_reader);
     int count = 0;
-    while(fgets(bunkStr, 100, fileReader)!=NULL){
+    while(fgets(header_str, 100, file_reader)!=NULL) {
         count++;
     }
     return count;
 }
 
-int **procList(char* filename) {
-    lines = countlines(filename);
+int **proc_list(char* filename) {
+    lines = count_lines(filename);
     
-    FILE *fileRead = fopen(filename, "r");
-    if(fileRead == NULL){
+    FILE *file_reader = fopen(filename, "r");
+    if(file_reader == NULL) {
         printf("File not found");
         exit(0);
     }
 
     char currstring[60];
-    fgets(currstring, 60, fileRead); //get first bunk line
+    fgets(currstring, 60, file_reader); //get first header line
     //printf("%s", currstring); //don't need for program was for debugging
     
-    int **firstProc;
-    firstProc = malloc(sizeof(int*) * lines);
+    int **first_process;
+    first_process = malloc(sizeof(int*) * lines);
     int j;
-    for(j=0; j<lines; j++){
-        firstProc[j] = malloc(sizeof(int*) * 3);
-        fscanf(fileRead, "%d", &firstProc[j][0]);
-        fscanf(fileRead, "%d", &firstProc[j][1]);
-        fscanf(fileRead, "%d", &firstProc[j][2]);
+    for(j=0; j<lines; j++) {
+        first_process[j] = malloc(sizeof(int*) * 3);
+        fscanf(file_reader, "%d", &first_process[j][0]);
+        fscanf(file_reader, "%d", &first_process[j][1]);
+        fscanf(file_reader, "%d", &first_process[j][2]);
     }
     
-    fclose(fileRead);
-    return firstProc;
+    fclose(file_reader);
+    return first_process;
 }
 
-void onClockTick(){
+void on_clock_tick() {
     //count up time, and check how many of the processes have arrived
     time++;
-    if(currentProcess != -1){
-        processes[currentProcess][2] = processes[currentProcess][2] -1;
-        printf("current process time: %d\n", processes[currentProcess][2]);
+    if(running_process != -1) {
+        processes[running_process][2] = processes[running_process][2] -1;
+        printf("current process time: %d\n", processes[running_process][2]);
     }
     //NEED TO ADD CHECK TO MAKE SURE CURRENT PROCESS ISN'T DONE AND ADD TERMINATION(remove from list)
-    printf("currprocs\n");
-    int currProcs = 0;
+    printf("identified_processes\n");
+    int identified_processes = 0;
     int i;
-    for(i=0; i<lines; i++){
-        if(processes[i][1]<=time){
-            currProcs++;
+    for(i=0; i<lines; i++) {
+        if(processes[i][1]<=time) {
+            identified_processes++;
         }
     }
     //find the process with the SRT, counting backwards through AT so that ties are broken by AT
-    printf("SRT of %d processes\n", currProcs);
+    printf("SRT of %d processes\n", identified_processes);
     int j;
     int min = -1;
     int minproc = -1;
-    for(j = currProcs-1; j >= 0; j--){
-        int toCheck = processes[j][2];
-        if(j == currProcs-1){
-            min = toCheck;
+    for(j = identified_processes-1; j >= 0; j--) {
+        int current_process = processes[j][2];
+        if(j == identified_processes-1) {
+            min = current_process;
             minproc = j;
         }
-        else if(toCheck < min){
-            min = toCheck;
+        else if(current_process < min) {
+            min = current_process;
             minproc = j;
         }
     }
     //if no process is running, do the SRTF
-    if(currentProcess == -1){
+    if(running_process == -1) {
         //createChild(minproc)
         //startRunning(minproc)
-        currentProcess = minproc;
-        printf("Make new process %d\n", currentProcess);
+        running_process = minproc;
+        printf("Make new process %d\n", running_process);
     }
-    else if(minproc == currentProcess){
+    else if(minproc == running_process) {
         //do nothing I think
-        printf("Let current process run %d\n", currentProcess);
+        printf("Let current process run %d\n", running_process);
     }
     else{
-        currentProcess = minproc;
+        running_process = minproc;
         //pause previous process
         //check if 'new' process already exists
         //createChild(minproc)
-        printf("Pause current process and start new one %d\n", currentProcess);
+        printf("Pause current process and start new one %d\n", running_process);
     }
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
     char *filename = argv[1];
-    processes = procList(filename);
-    currentProcess = -1;
+    processes = proc_list(filename);
+    running_process = -1;
     int i;
-    for(i = 0; i<lines; i++){
+    for(i = 0; i<lines; i++) {
         printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
 
     }
     time = 0;
     //startClock();
-    onClockTick();
-    onClockTick();
-    onClockTick();
-    onClockTick();
+    on_clock_tick();
+    on_clock_tick();
+    on_clock_tick();
+    on_clock_tick();
     
     return 0;
 }

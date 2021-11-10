@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "child.h"
-#include "srtfScheduler.c"
+#include "srtfScheduler.h"
 #include "timer.h"
 
 int child_pid = -1;

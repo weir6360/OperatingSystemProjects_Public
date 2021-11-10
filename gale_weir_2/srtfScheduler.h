@@ -6,6 +6,7 @@
     Description of the program: Header for s.c to be used by 5ps.c
 */
 
-void timer_handler(int timer_signal);
-
-void start_timer();
+int count_lines(char* filename); 
+int **proc_list(char*filename); 
+void on_clock_tick(); 
+int main(int argc, char argv*[]);

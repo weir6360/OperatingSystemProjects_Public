@@ -14,15 +14,14 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include "child.h"
-#include "srtfScheduler.c"
-#include "timer.c"
+#include "srtfScheduler.h"
+#include "timer.h"
 
 /*
-Function Name: s_return
-Input to the method: pid: the process id for the current process
-Output(Return value): the program associated with the pid's state, either 
-Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
-    program_state, checks to make sure specified file exists, and if so returns the program_state
+Function Name: 
+Input to the method:
+Output(Return value): 
+Brief description of the task: 
 */
 void timer_handler(int timer_signal) { 
     latest_time++;
@@ -32,7 +31,7 @@ void timer_handler(int timer_signal) {
 }
 
 /*
-Function Name: s_return
+Function Name:
 Input to the method: pid: the process id for the current process
 Output(Return value): the program associated with the pid's state, either 
 Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
