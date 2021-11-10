@@ -14,14 +14,6 @@
 #include "srtfScheduler.h"
 #include "timer.h"
 
-/*
-Function Name: s_return
-Input to the method: pid: the process id for the current process
-Output(Return value): the program associated with the pid's state, either 
-Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
-    program_state, checks to make sure specified file exists, and if so returns the program_state
-*/
-int count_lines(char* filename) {
 int **processes;
 int lines;
 int time;
@@ -93,7 +85,6 @@ void on_clock_tick() {
         }
     }
     //find the process with the SRT, counting backwards through AT so that ties are broken by AT
-    printf("SRT of %d processes\n", currProcs);
     int j;
     int min = -1;
     int minproc = -1;
@@ -127,7 +118,8 @@ void on_clock_tick() {
         printf("Pause current process and start new one %d\n", running_process);
     }
 }
-int main(int argc, char *argv[]){
+
+int main(int argc, char *argv[]) {
     char *filename = argv[1];
     processes = proc_list(filename);
     running_process = -1;

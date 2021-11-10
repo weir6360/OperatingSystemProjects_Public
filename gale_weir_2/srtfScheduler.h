@@ -9,4 +9,4 @@
 int count_lines(char* filename); 
 int **proc_list(char*filename); 
 void on_clock_tick(); 
-int main(int argc, char argv*[]);
+int main(int argc, char *argv[]);
