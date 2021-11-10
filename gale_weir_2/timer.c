@@ -6,7 +6,20 @@
     Description of the program: Child instances  
 */
 
-void timer_handler(int timer_signal)
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include 
+
+void timer_handler(int timer_signal) { 
+    latest_time++;
+
+    //placeholder: execute actual scheduler
+    periodic_scheduler(latest_time);
+}
 
 void start_timer() { 
     struct sigaction sa; 
@@ -26,7 +39,7 @@ void start_timer() {
     }
 
     while (1) {
-        
+
     }
 
 

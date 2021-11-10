@@ -13,16 +13,19 @@
 
 int child_pid = -1;
 int child_process_num = -1;
+
 unsigned long long int child_prime = 1000000000; 
 unsigned long long int highest_prime = 1000000000; 
 
 unsigned long long int generate_random_number() { 
     unsigned long long int lower_bound = 1000000000;
     unsigned long long int upper_bound = 9999999999;
+    
     do { 
         child_prime *= RAND_MAX;
         child_prime += rand(); 
     } while (child_prime < upper_bound && child_prime > 0);
+    
     if (child_prime < 0) { 
         child_prime *= -1; 
     }
@@ -51,18 +54,25 @@ void check_child_args(int argc, char *argv[]) {
 void check_child_signal(int signal) {
     switch (signal) { 
         case SIGCONT: 
-            printf("Process %d: my PID is %d: I ", child_process_num, child_pid, highest_prime); 
-            pause(); 
+            printf("Process %d: my PID is %d: I just got resumed. Highest prime" 
+            "number I found is %llu.\n", 
+            child_process_num, child_pid, highest_prime); 
             break; 
         case SIGTERM: 
-            printf("Process %d: my PID is %d: I ", child_process_num, child_pid, highest_prime); 
+            printf("Process %d: my PID is %d: I completed. "
+            " my task and will exit. Highest prime numbe I found is %llu.\n", 
+            child_process_num, child_pid, highest_prime); 
             exit(EXIT_SUCCESS);
             break; 
         case SIGTSTP: 
-            printf("Process %d: my PID is %d: I ", child_process_num, child_pid, highest_prime); 
+            printf("Process %d: my PID is %d: I am about to be suspended." 
+            "Highest prime number I found is %llu.\n", 
+            child_process_num, child_pid, highest_prime); 
             pause(); 
             break;
-    }
+        default: 
+            break;
+    } 
 }
 
 int main (int argc, char **argv) {
