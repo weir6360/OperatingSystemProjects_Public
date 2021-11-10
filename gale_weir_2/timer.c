@@ -1,9 +1,10 @@
 /*
     Author: Alex Gale, Gabe Weir
-    Assignment Number: 1
+    Assignment Number: 2
     Date of Submission: 
-    Name of this file: child.c
-    Description of the program: Child instances  
+    Name of this file: timer.c
+    Description of the program: handles the ticking iteration of the timer for 
+        use by srtfScheduler.c    
 */
 
 #include <signal.h>
@@ -12,15 +13,31 @@
 #include <string.h>
 #include <sys/time.h>
 #include <unistd.h>
-#include 
+#include "child.h"
+#include "srtfScheduler.c"
+#include "timer.c"
 
+/*
+Function Name: s_return
+Input to the method: pid: the process id for the current process
+Output(Return value): the program associated with the pid's state, either 
+Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
+    program_state, checks to make sure specified file exists, and if so returns the program_state
+*/
 void timer_handler(int timer_signal) { 
     latest_time++;
 
     //placeholder: execute actual scheduler
-    periodic_scheduler(latest_time);
+    srtf_scheduler(latest_time);
 }
 
+/*
+Function Name: s_return
+Input to the method: pid: the process id for the current process
+Output(Return value): the program associated with the pid's state, either 
+Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
+    program_state, checks to make sure specified file exists, and if so returns the program_state
+*/
 void start_timer() { 
     struct sigaction sa; 
     memset (&sa, 0, sizeof(sa)); 
@@ -39,7 +56,7 @@ void start_timer() {
     }
 
     while (1) {
-
+        //while-loop
     }
 
 

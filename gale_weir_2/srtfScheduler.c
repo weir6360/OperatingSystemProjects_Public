@@ -1,6 +1,6 @@
 /*
     Author: Alex Gale, Gabe Weir
-    Assignment Number: 1
+    Assignment Number: 2
     Date of Submission: 
     Name of this file: srtfScheduler.c
     Description of the program: 
@@ -10,8 +10,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "child.h"
+#include "srtfScheduler.c"
+#include "timer.h"
 
-int countlines(char* filename){
+/*
+Function Name: s_return
+Input to the method: pid: the process id for the current process
+Output(Return value): the program associated with the pid's state, either 
+Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
+    program_state, checks to make sure specified file exists, and if so returns the program_state
+*/
+int count_lines(char* filename) {
     FILE *fileReader = fopen(filename, "r");
     if(fileReader == NULL){
         printf("File not found");
@@ -52,7 +62,6 @@ int **procList(char* filename) {
     fclose(fileRead);
     return firstProc;
 }
-
 
 
 int main(int argc, char *argv[]){
