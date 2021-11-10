@@ -22,6 +22,12 @@ Brief description of the task: s_return parses the stat file for the program's p
     program_state, checks to make sure specified file exists, and if so returns the program_state
 */
 int count_lines(char* filename) {
+int **processes;
+int lines;
+int time;
+int currentProcess;
+
+int countlines(char* filename){
     FILE *fileReader = fopen(filename, "r");
     if(fileReader == NULL){
         printf("File not found");
@@ -37,7 +43,7 @@ int count_lines(char* filename) {
 }
 
 int **procList(char* filename) {
-    int lines = countlines(filename);
+    lines = countlines(filename);
     
     FILE *fileRead = fopen(filename, "r");
     if(fileRead == NULL){
@@ -63,14 +69,73 @@ int **procList(char* filename) {
     return firstProc;
 }
 
+void onClockTick(){
+    //count up time, and check how many of the processes have arrived
+    time++;
+    if(currentProcess != -1){
+        processes[currentProcess][2] = processes[currentProcess][2] -1;
+        printf("current process time: %d\n", processes[currentProcess][2]);
+    }
+    //NEED TO ADD CHECK TO MAKE SURE CURRENT PROCESS ISN'T DONE AND ADD TERMINATION(remove from list)
+    printf("currprocs\n");
+    int currProcs = 0;
+    int i;
+    for(i=0; i<lines; i++){
+        if(processes[i][1]<=time){
+            currProcs++;
+        }
+    }
+    //find the process with the SRT, counting backwards through AT so that ties are broken by AT
+    printf("SRT of %d processes\n", currProcs);
+    int j;
+    int min = -1;
+    int minproc = -1;
+    for(j = currProcs-1; j >= 0; j--){
+        int toCheck = processes[j][2];
+        if(j == currProcs-1){
+            min = toCheck;
+            minproc = j;
+        }
+        else if(toCheck < min){
+            min = toCheck;
+            minproc = j;
+        }
+    }
+    //if no process is running, do the SRTF
+    if(currentProcess == -1){
+        //createChild(minproc)
+        //startRunning(minproc)
+        currentProcess = minproc;
+        printf("Make new process %d\n", currentProcess);
+    }
+    else if(minproc == currentProcess){
+        //do nothing I think
+        printf("Let current process run %d\n", currentProcess);
+    }
+    else{
+        currentProcess = minproc;
+        //pause previous process
+        //check if 'new' process already exists
+        //createChild(minproc)
+        printf("Pause current process and start new one %d\n", currentProcess);
+    }
 
 int main(int argc, char *argv[]){
     char *filename = argv[1];
-    int **processes;
     processes = procList(filename);
-    for process in processes
-    printf("%d, %d, %d\n", processes[0][0],processes[0][1],processes[0][2]);
-    printf("%d, %d, %d\n", processes[1][0],processes[1][1],processes[1][2]);
+    currentProcess = -1;
+    int i;
+    for(i = 0; i<lines; i++){
+        printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
+
+    }
+    time = 0;
+    //startClock();
+    onClockTick();
+    onClockTick();
+    onClockTick();
+    onClockTick();
+    
     return 0;
 }
 
