@@ -18,7 +18,7 @@ int **processes;
 int lines;
 int time;
 int running_process;
-
+int ended_processes;
 
 /*
 Function Name: 
@@ -67,6 +67,25 @@ int **proc_list(char* filename) {
     fclose(file_reader);
     return first_process;
 }
+//removes a terminated row
+int **remove_one_row(int **input) {
+    int **first_process;
+    first_process = malloc(sizeof(int*) * lines - ended_processes);
+    int j;
+    for(j = 0; j < lines - ended_processes; j++) {
+        if(j == running_process) {
+
+        }
+        else {
+            first_process[j] = malloc(sizeof(int*) * 3);
+            input[j][0] = first_process[j][0];
+            input[j][1] = first_process[j][1];
+            input[j][2] = first_process[j][2];
+        }
+        
+    }
+    return first_process;
+}
 
 void on_clock_tick() {
     //count up time, and check how many of the processes have arrived
@@ -74,6 +93,15 @@ void on_clock_tick() {
     if(running_process != -1) {
         processes[running_process][2] = processes[running_process][2] -1;
         printf("current process time: %d\n", processes[running_process][2]);
+        if(processes[running_process][2] == 0) {
+            //terminate process
+            ended_processes++;
+            processes = remove_one_row(processes);
+            running_process = -1;
+            if(sizeof(processes) == 0) {
+                //exit(0);
+            }
+        }
     }
     //NEED TO ADD CHECK TO MAKE SURE CURRENT PROCESS ISN'T DONE AND ADD TERMINATION(remove from list)
     printf("identified_processes\n");
@@ -123,17 +151,14 @@ int main(int argc, char *argv[]) {
     char *filename = argv[1];
     processes = proc_list(filename);
     running_process = -1;
+    ended_processes = 0;
     int i;
     for(i = 0; i<lines; i++) {
         printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
 
     }
     time = 0;
-    //startClock();
-    on_clock_tick();
-    on_clock_tick();
-    on_clock_tick();
-    on_clock_tick();
+    start_timer();
     
     return 0;
 }

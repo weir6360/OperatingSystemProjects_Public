@@ -17,6 +17,8 @@
 #include "srtfScheduler.h"
 #include "timer.h"
 
+int latest_time;
+
 /*
 Function Name: 
 Input to the method:
@@ -27,7 +29,7 @@ void timer_handler(int timer_signal) {
     latest_time++;
 
     //placeholder: execute actual scheduler
-    srtf_scheduler(latest_time);
+    on_clock_tick();
 }
 
 /*
@@ -45,13 +47,13 @@ void start_timer() {
 
     struct itimerval timer; 
     timer.it_value.tv_sec = 1; 
-    timer.it_vaule.tv_usec = 0; 
+    timer.it_value.tv_usec = 0; 
     timer.it_interval.tv_sec = 1; 
     timer.it_interval.tv_usec = 0; 
     
     if (setitimer(ITIMER_REAL, &timer, NULL) == -1) {
-        printf("%s: error caused by setitimer.\n", prog_name);
-        exit(EXIT_FAILURE)
+        printf("error caused by setitimer.\n");
+        exit(EXIT_FAILURE);
     }
 
     while (1) {
