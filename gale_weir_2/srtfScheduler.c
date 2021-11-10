@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "child.h"
-#include "srtfScheduler.c"
+//#include "srtfScheduler.h"
 #include "timer.h"
 
 /*
@@ -21,7 +21,7 @@ Output(Return value): the program associated with the pid's state, either
 Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
     program_state, checks to make sure specified file exists, and if so returns the program_state
 */
-int count_lines(char* filename) {
+
 int **processes;
 int lines;
 int time;
@@ -75,8 +75,8 @@ void onClockTick(){
     if(currentProcess != -1){
         processes[currentProcess][2] = processes[currentProcess][2] -1;
         printf("current process time: %d\n", processes[currentProcess][2]);
+        //if time remaining == 0 then delete line
     }
-    //NEED TO ADD CHECK TO MAKE SURE CURRENT PROCESS ISN'T DONE AND ADD TERMINATION(remove from list)
     printf("currprocs\n");
     int currProcs = 0;
     int i;
@@ -86,7 +86,6 @@ void onClockTick(){
         }
     }
     //find the process with the SRT, counting backwards through AT so that ties are broken by AT
-    printf("SRT of %d processes\n", currProcs);
     int j;
     int min = -1;
     int minproc = -1;
@@ -119,7 +118,7 @@ void onClockTick(){
         //createChild(minproc)
         printf("Pause current process and start new one %d\n", currentProcess);
     }
-
+}
 int main(int argc, char *argv[]){
     char *filename = argv[1];
     processes = procList(filename);
