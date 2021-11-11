@@ -157,22 +157,23 @@ void on_clock_tick() {
             minproc = j;
         }
     }
-    //if no process is running, do the SRTF
+    //need to make a list keeping track of process number and PID correlations
     if(running_process == -1) {
-        //createChild(minproc)
-        //startRunning(minproc)
+        //check if minproc already exists (processes[minproc][0] in proc id list)
+        //start minproc if exists, if not make a new one (fork)
+        
         running_process = minproc;
         printf("Make new process %d\n", running_process);
     }
     else if(minproc == running_process) {
-        //do nothing I think
+        //do nothing, current process keeps running
         printf("Let current process run %d\n", running_process);
     }
     else{
+        //pause running_process
         running_process = minproc;
-        //pause previous process
         //check if 'new' process already exists
-        //createChild(minproc)
+        //start minproc if exists, if not make a new one(fork)
         printf("Pause current process and start new one %d\n", running_process);
     }
 }
