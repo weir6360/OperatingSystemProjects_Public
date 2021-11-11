@@ -8,7 +8,7 @@
 
 unsigned long long int generate_random_number(); 
 
-int check_prime_num (unsigned long long int current_prime);
+int check_prime_num ();
 
 void check_child_args(int argc, char *argv[]);
 
