@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
-    Assignment Number: 1
-    Date of Submission: 
+    Assignment Number: 2
+    Date of Submission: 11/11/2021
     Name of this file: child.c
     Description of the program: Child instances grab their pid from args, randomly 
         generate a 10-digit number upon creation via fork(), and start checking for
@@ -17,37 +17,57 @@
 #include "srtfScheduler.h"
 #include "timer.h"
 
+const unsigned long long int PRIME_LOWER_BOUND = 1000000000;
+const unsigned long long int PRIME_UPPER_BOUND = 9999999999; 
+
 int child_pid = -1;
 int child_process_num = -1;
 
 unsigned long long int child_prime = 1000000000; 
-unsigned long long int highest_prime = 1000000000; 
+unsigned long long int highest_prime = -1; 
 
-unsigned long long int generate_random_number() { 
-    unsigned long long int lower_bound = 1000000000;
-    unsigned long long int upper_bound = 9999999999;
-    
+/*
+    Function Name: generate_random_number()
+    Input to the method: n/a
+    Output(Return value): child_prime: the child's randomly-generated prime number. 
+    Brief description of the task: Generates a random number, then multiplies it by -1 if it 
+        somehow became negative. Returns the prime after generation. 
+*/
+unsigned long long int generate_random_number() {     
+    //create seed for random generation. 
+    time_t seed_time;
+    srand((unsigned) time(&seed_time));
+
     // generate the random number
     do { 
         child_prime *= RAND_MAX;
         child_prime += rand(); 
-    } while (child_prime < upper_bound && child_prime > 0);
+    } while (child_prime < PRIME_UPPER_BOUND && child_prime > 0);
     
     // if the number overexceeds, it remains positive. 
     if (child_prime < 0) { 
         child_prime *= -1; 
     }
-    // printf("%llu", child_prime);
-    return child_prime % 9999999999;
+    return child_prime % PRIME_UPPER_BOUND;
 
 }
 
-int check_prime_num (unsigned long long int current_prime) { 
-    unsigned long long int range = sqrt(current_prime); 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
+int check_prime_num () { 
+    unsigned long long int range = sqrt(highest_prime); 
     unsigned long long int iterator = 3; 
-    int is_prime = 1; 
+
+    //while the current prime number is in range of the iteration, continue increasing the iterator
+    //checks up to the square-root of the current prime
     while (is_prime == 1 && iterator <= range) {
-        if ((current_prime % iterator) == 0) {
+        int is_prime = 1; 
+        if ((highest_prime % iterator) == 0) {
             is_prime = 0; 
         }
         iterator++; 
@@ -55,6 +75,13 @@ int check_prime_num (unsigned long long int current_prime) {
     return is_prime; 
 }
 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 void check_child_args(int argc, char *argv[]) { 
     int c; 
     while ((c = getopt(argc, argv, "p:")) != -1) {
@@ -65,6 +92,13 @@ void check_child_args(int argc, char *argv[]) {
     }
 }
 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 void check_child_signal(int signal) {
     switch (signal) { 
         case SIGCONT: 
@@ -89,13 +123,30 @@ void check_child_signal(int signal) {
     } 
 }
 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 int main (int argc, char **argv) {
-    time_t seed_time;
-    srand((unsigned) time(&seed_time));
-    unsigned long long int holder = generate_random_number();
+    //grab the needed elements from the arguments
+    check_child_args(argc, argv);
     child_pid = getpid(); 
-    child_prime = holder;
+    child_prime = generate_random_number();
     printf("Process %d: my PID is %d: I just got started. \nI am starting with the number"
     "%llu to find the next prime number.\n",
     child_process_num, child_pid, child_prime);
+
+    //set and create sigaction object to interact with srtfScheduler.c
+    struct sigaction actor; 
+    memset(&actor, sizeof(actor));
+    actor.sa_handler = check_child_signal;
+    sigaction (SIGCONT, &actor, NULL);
+    sigaction (SIGTERM, &actor, NULL); 
+    sigaction (SIGTSTP, &actor, NULL); 
+    while (1) 
+        check_prime_num();
+   
 }

@@ -1,9 +1,10 @@
 /*
     Author: Alex Gale, Gabe Weir
-    Assignment Number: 1
-    Date of Submission: 10/21/21
-    Name of this file: s.h
-    Description of the program: Header for s.c to be used by 5ps.c
+    Assignment Number: x
+    Date of Submission: xx/xx/xx
+    Name of this file: ___
+    Description of the program: ___________
+        ___________________________________
 */
 
 void timer_handler(int timer_signal);

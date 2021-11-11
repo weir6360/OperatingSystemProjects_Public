@@ -1,0 +1,69 @@
+=== File Header ===
+
+/*
+    Author: Alex Gale, Gabe Weir
+    Assignment Number: x
+    Date of Submission: xx/xx/xx
+    Name of this file: ___
+    Description of the program: ___________
+        ___________________________________
+*/
+
+=== Function Header ===
+
+/*
+    Function Name: ___
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
+
++++ Style Guide +++
+
++++++ Code Files +++++
+1. File Headers: All files contain header file as comments at the top of the page
+2. Variable Names use either snake-case or camel-case. 
+3. Named Constants: use all-caps, connected via underscores ala snake-case
+4. Function Names: Obey rules 2 and 3. Name must be descriptive of task it is completing
+5. Function Headers: All functions possess a header file at the top of their declaration
+6. Method Size: No method should be more than a page of printout.
+7. White Space: Separate code blocks via white space, should look clean and readable
+    Should be able to quickly find beginning and end of code blocks
+8. Blocks: Defined as a set of related statements, including loops and branching statements
+    Ex: 
+        char [] hi = "Welcome to Chili's!";
+
+        int c = 0; 
+        int length = strlen(hi); 
+
+        while (i < length) { 
+            count++; 
+        }
+9. Block Comments: Every related code of block (5-8 lines) must have a comment
+10. In-Line Comments: Any "ugly" code sequences should include comments to explain functionality
+    Don't go overbard. 
+11. Indentation: lines inside loops, branching statements and methods and classes should be indented. 
+    If the body of a loop or if/else is a single statement, not a block, indent the statement. 
+    Place the open curly brace on the line of a statement. 
+12. Line Length: should not be longer than 80 characters. 
+13. Message Prompt: Do not condescend, or be humorous. Be succinct and informative.
+14. Output: Label all output clearly, and present information in a consistent mater. 
+15. File Content Organization: In any file, do the following in this order: 
+    1. Includes
+    2. Function prototypes/declarations
+    3. Typedefs and Constants
+    4. Global variables
+    5. Function Bodies. 
+
++++++ Code Design Guidelines. +++++
+1. Use good modular design.
+2. Use good error detection. Always check return values from functions and handle errors appropriately. 
+    SEGFAULT is not appropriate error handling. 
+3. When you dynamically allocate memory via malloc, make sure the memory is freed. 
+4. No function should be longer than a page
+5. The main function shouldn't contain low-level details. 
+6. Structued Programming: Do not use "Continue", only "Break". minimize use of Return in functions. 
+7. Functions: Include as many functions as possible and meaningful in a program. 
+8. Magic Numbers: Do not use unnamed constants. Give them names. 
+9. Global Variables and Recursion: Avoid unless directed to do so.  

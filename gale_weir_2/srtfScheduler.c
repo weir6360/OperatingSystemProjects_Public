@@ -1,9 +1,11 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 2
-    Date of Submission: 
+    Date of Submission: 11/11/2021
     Name of this file: srtfScheduler.c
-    Description of the program: 
+    Description of the program: Handles file parsing and scheduler algorithm
+        Creates child forks when needed, and sends signals to children. 
+
 */
 
 
@@ -41,6 +43,13 @@ int count_lines(char* filename) {
     return count;
 }
 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 int **proc_list(char* filename) {
     lines = count_lines(filename);
     
@@ -67,7 +76,15 @@ int **proc_list(char* filename) {
     fclose(file_reader);
     return first_process;
 }
+
 //removes a terminated row
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 int **remove_one_row(int **input) {
     int **first_process;
     first_process = malloc(sizeof(int*) * lines - ended_processes);
@@ -87,6 +104,13 @@ int **remove_one_row(int **input) {
     return first_process;
 }
 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 void on_clock_tick() {
     //count up time, and check how many of the processes have arrived
     time++;
@@ -147,6 +171,13 @@ void on_clock_tick() {
     }
 }
 
+/*
+    Function Name: check_prime_num
+    Input to the method: ___
+    Output(Return value): ___
+    Brief description of the task:_________
+        ___________________________________
+*/
 int main(int argc, char *argv[]) {
     char *filename = argv[1];
     processes = proc_list(filename);
