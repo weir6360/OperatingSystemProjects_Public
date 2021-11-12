@@ -97,6 +97,7 @@ int **proc_list(char* filename) {
         ___________________________________
 */
 int **remove_one_row(int **input) {
+    kill(children[processes[running_process][0]],SIGTERM);
     int **first_process;
     first_process = malloc(sizeof(int*) * (lines - ended_processes));
     int j;
@@ -183,7 +184,9 @@ void manage_children(int minproc) {
             printf("F O R K\n\n");
             child_pid = fork();
             if (child_pid == 0) {
-                execlp("./child", "./child", "p", minproc, NULL);
+                char *minarg;
+                sprintf(minarg, "%d", minproc);
+                execlp("./child", "./child", "p", minproc, (char *)NULL);
             }
             else {
                 children[processes[minproc][0]] = child_pid;
@@ -203,14 +206,14 @@ void manage_children(int minproc) {
         printf("Let current process run %d\n", running_process);
     }
     else{
-        //pause running_process - pid at children[processes[running_process][0]]
+        kill(children[processes[running_process][0]],SIGTSTP);//pause current process
         running_process = minproc;
         if(children[processes[minproc][0]] > 0) {
             int child_pid;
             printf("F O R K\n\n");
             child_pid = fork();
             if (child_pid == 0) {
-                execlp("./child", "./child", "p", minproc, NULL);
+                execlp("./child", "./child", "p", minproc, (char *)NULL);
             }
             else {
                 children[processes[minproc][0]] = child_pid;
@@ -219,7 +222,8 @@ void manage_children(int minproc) {
             }
         }
         else {
-            //start pid at children[processes[minproc][0]]
+            kill(children[processes[minproc][0]],SIGCONT);//start pid at children[processes[minproc][0]]
+            running_process = minproc;
         }
         printf("Pause current process and start new one %d\n", running_process);
     }
