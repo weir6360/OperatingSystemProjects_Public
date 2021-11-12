@@ -1,10 +1,9 @@
 /*
     Author: Alex Gale, Gabe Weir
-    Assignment Number: x
-    Date of Submission: xx/xx/xx
-    Name of this file: ___
-    Description of the program: ___________
-        ___________________________________
+    Assignment Number: 2
+    Date of Submission: 11/11/2021
+    Name of this file: timer.h
+    Description of the program: Header file for timer.h
 */
 
 void timer_handler(int timer_signal);

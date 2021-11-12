@@ -20,10 +20,10 @@
 int latest_time;
 
 /*
-Function Name: 
-Input to the method:
-Output(Return value): 
-Brief description of the task: 
+Function Name: timer_handler
+Input to the method: timer_signal: numeric value of the received signal
+Output(Return value): n/a
+Brief description of the task: Increment the time, and call on_clock_tick
 */
 void timer_handler(int timer_signal) { 
     latest_time++;
@@ -33,29 +33,33 @@ void timer_handler(int timer_signal) {
 }
 
 /*
-Function Name:
-Input to the method: pid: the process id for the current process
-Output(Return value): the program associated with the pid's state, either 
-Brief description of the task: s_return parses the stat file for the program's pid state, passes it to 
-    program_state, checks to make sure specified file exists, and if so returns the program_state
+Function Name: start_timer
+Input to the method: n/a
+Output(Return value): n/a
+Brief description of the task: sets up the sigaction struct, establishes 
+    timer intervals and values, and starts the timer and while-loop for ticking
 */
 void start_timer() { 
+    //creation of the sigaction structure
     struct sigaction sa; 
     memset (&sa, 0, sizeof(sa)); 
     sa.sa_handler = &timer_handler; 
     sigaction(SIGALRM, &sa, NULL);    
 
+    //set the timer's initial value and interval value in secs and milisecs. 
     struct itimerval timer; 
     timer.it_value.tv_sec = 1; 
     timer.it_value.tv_usec = 0; 
     timer.it_interval.tv_sec = 1; 
     timer.it_interval.tv_usec = 0; 
     
+    //set the timer, check for errors and terminate if errored out. 
     if (setitimer(ITIMER_REAL, &timer, NULL) == -1) {
         printf("error caused by setitimer.\n");
         exit(EXIT_FAILURE);
     }
 
+    //
     while (1) {
         //while-loop
     }

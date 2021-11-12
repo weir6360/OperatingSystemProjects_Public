@@ -59,8 +59,8 @@ unsigned long long int generate_random_number() {
 
 /*
     Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
+    Input to the method: n/a
+    Output(Return value): 
     Brief description of the task:_________
         ___________________________________
 */
@@ -82,7 +82,7 @@ int check_prime_num () {
 
 /*
     Function Name: check_prime_num
-    Input to the method: ___
+    Input to the method: 
     Output(Return value): ___
     Brief description of the task:_________
         ___________________________________

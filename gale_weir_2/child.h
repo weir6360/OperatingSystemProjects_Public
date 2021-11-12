@@ -1,9 +1,9 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 2
-    Date of Submission: 
+    Date of Submission: 11/11/2021
     Name of this file: child.h
-    Description of the program: Header for child.c to be used in other programs
+    Description of the program: header file for child.c
 */
 
 unsigned long long int generate_random_number(); 
