@@ -13,9 +13,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
+#include <sys/current_time.h>
 #include <sys/types.h>
-#include <time.h>
+#include <current_time.h>
 #include <unistd.h>
 #include "child.h"
 #include "srtfScheduler.h"
@@ -23,8 +23,8 @@
 
 int **processes;
 int lines;
-int time;
-int running_process = NO_PROCESS;
+int current_time;
+int running_process = -1;
 int ended_processes;
 int *children;
 
@@ -58,7 +58,7 @@ int count_lines(char* file_name) {
     Input to the method: file_name, the name of the current file
     Output(Return value): first_process, the first process identified on the list. 
     Brief description of the task: uses the line count to read through each line
-        and store its contents (process id, arrival time and burst) in the 2d array
+        and store its contents (process id, arrival current_time and burst) in the 2d array
         processes
 */
 int **process_list(char* file_name) {
@@ -127,7 +127,7 @@ int **remove_one_row(int **input) {
         
     }
     int i;
-    for(i = 0; i<lines - ended_processes; i++) {
+    for(i = 0; i < lines - ended_processes; i++) {
         printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
 
     }
@@ -137,9 +137,8 @@ int **remove_one_row(int **input) {
 /*     PROTOTYPE FUNCTION      */
 void continue_child(int child) { 
     if (child != NO_PID) {
-        kill(children[processes[child][0],SIGCONT]);
-        running_process = minproc; 
-
+        kill(children[processes[child][0]],SIGCONT);
+        running_process = child; 
     }
 
 }
@@ -177,7 +176,7 @@ void terminate_child(int child) {
 
 /*
     Function Name: manage_children
-    Input to the method: minproc, the process with the minimum burst time
+    Input to the method: minproc, the process with the minimum burst current_time
     Output(Return value): n/a
     Brief description of the task: uses minproc to fork a child process if none exist,
         otherwise sends kill commands to manage children
@@ -188,11 +187,10 @@ void manage_children(int minproc) {
     //if there is no running process
     if(running_process == -1) {
         create_child(minproc);
-        else {
-            //start pid at children[processes[minproc][0]]
-            continue_child(minproc);
-            printf("Run existing process %d\n", running_process);
-        }
+        //start pid at children[processes[minproc][0]]
+        continue_child(minproc);
+        printf("Run existing process %d\n", running_process);
+        
     }
 
     // else if the minimum burst process is currently running
@@ -201,17 +199,16 @@ void manage_children(int minproc) {
         printf("Let current process run %d\n", running_process);
     }
 
-    // else, pause the current process, and fork to the one with the lowest burst time
+    // else, pause the current process, and fork to the one with the lowest burst current_time
     else {
         stop_child(running_process);
         running_process = minproc;
         //if a child doesn't exist for the given process num, start one
         create_child(minproc);
         //send a continue signal to a process if it has the lowest burst.
-        else {
-            continue_child(minproc);
-            running_process = minproc;
-        }
+        continue_child(minproc);
+        running_process = minproc;
+        
         printf("Pause current process and start new one %d\n", running_process);
     }
 }
@@ -220,15 +217,15 @@ void manage_children(int minproc) {
     Function Name: on_clock_tick
     Input to the method: n/a
     Output(Return value): n/a
-    Brief description of the task:_________
-        ___________________________________
+    Brief description of the task: on a clock tick, increase the timer, 
+        check the running processes, remove terminated processes
 */
 void on_clock_tick() {
-    //count up time, and check how many of the processes have arrived
-    time++;
+    //count up current_time, and check how many of the processes have arrived
+    current_time++;
     if(running_process != -1) {
         processes[running_process][2] = (processes[running_process][2] -1);
-        //printf("current running process time: %d\n", processes[running_process][2]);
+        //printf("current running process current_time: %d\n", processes[running_process][2]);
         if(processes[running_process][2] <= 0) {
             //terminate process
             ended_processes++;
@@ -241,11 +238,11 @@ void on_clock_tick() {
             }
         }
     }
-    printf("time: %d\n", time);
+    printf("current_time: %d\n", current_time);
     int identified_processes = 0;
     int i;
     for(i=0; i < (lines - (ended_processes)); i++) {
-        if(processes[i][1] <= time /*&& processes[i][1] != 0*/) {
+        if(processes[i][1] <= current_time /*&& processes[i][1] != 0*/) {
             identified_processes++;
         }
     }
@@ -255,7 +252,7 @@ void on_clock_tick() {
     int minproc = -1;
     for(j = (identified_processes-1); j >= 0; j--) {
         int current_process = processes[j][2];
-        printf("current process time %d\n", current_process);
+        printf("current process current_time %d\n", current_process);
         if(j == (identified_processes-1)) {
             min = current_process;
             minproc = j;
@@ -285,7 +282,7 @@ int main(int argc, char *argv[]) {
         printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
 
     }
-    time = 0;
+    current_time = 0;
     start_timer();
     
     return 0;

@@ -25,5 +25,4 @@ void manage_children(int minproc);
 
 void on_clock_tick(); 
 
-
 int main(int argc, char *argv[]);
