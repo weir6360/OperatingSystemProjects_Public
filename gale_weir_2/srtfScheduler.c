@@ -23,7 +23,7 @@ int lines;
 int time;
 int running_process;
 int ended_processes;
-int *children;
+pid_t children[10];
 
 /*
 Function Name: 
@@ -55,15 +55,6 @@ int count_lines(char* filename) {
 */
 int **proc_list(char* filename) {
     lines = count_lines(filename);
-    
-    
-    int child_num[lines];
-    int i;
-    for(i = 0; i < lines; i++) {
-        child_num[i] = 0;
-    }
-    children = child_num;
-    children[0] = 0;
     
     FILE *file_reader = fopen(filename, "r");
     if(file_reader == NULL) {
@@ -179,17 +170,15 @@ void on_clock_tick() {
 void manage_children(int minproc) {
     
     if(running_process == -1) {
-        if(children[processes[minproc][0]] > 0) {
-            int child_pid;
+        if(children[processes[minproc][0]] == 0) {
             printf("F O R K\n\n");
-            child_pid = fork();
-            if (child_pid == 0) {
+            children[minproc] = fork();
+            if (children[minproc] == 0) {
                 char *minarg;
                 sprintf(minarg, "%d", minproc);
                 execlp("./child", "./child", "p", minproc, (char *)NULL);
             }
             else {
-                children[processes[minproc][0]] = child_pid;
                 running_process = minproc;
                 printf("Make new process %d\n", running_process);
             }
@@ -208,15 +197,13 @@ void manage_children(int minproc) {
     else{
         kill(children[processes[running_process][0]],SIGTSTP);//pause current process
         running_process = minproc;
-        if(children[processes[minproc][0]] > 0) {
-            int child_pid;
+        if(children[processes[minproc][0]] == 0) {
             printf("F O R K\n\n");
-            child_pid = fork();
-            if (child_pid == 0) {
+            children[minproc] = fork();
+            if (children[minproc] == 0) {
                 execlp("./child", "./child", "p", minproc, (char *)NULL);
             }
             else {
-                children[processes[minproc][0]] = child_pid;
                 running_process = minproc;
                 printf("Make new process %d\n", running_process);
             }
