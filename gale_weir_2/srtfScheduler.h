@@ -8,6 +8,22 @@
 */
 
 int count_lines(char* filename); 
-int **proc_list(char*filename); 
+
+int **process_list(char* filename); 
+
+int **remove_one_row(int **input);
+
+void continue_child(int child);
+
+void create_child(int new_process_num);
+
+void stop_child(int child);
+
+void terminate_child(int child);
+
+void manage_children(int minproc); 
+
 void on_clock_tick(); 
+
+
 int main(int argc, char *argv[]);

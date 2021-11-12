@@ -110,7 +110,7 @@ int **process_list(char* file_name) {
         and returning the index of the new process to start. 
 */
 int **remove_one_row(int **input) {
-    kill(children[processes[running_process][0]],SIGTERM);
+    terminate_child(running_process);
     int **first_process;
     first_process = malloc(sizeof(int*) * (lines - ended_processes));
     int j;
@@ -132,6 +132,88 @@ int **remove_one_row(int **input) {
 
     }
     return first_process;
+}
+
+/*     PROTOTYPE FUNCTION      */
+void continue_child(int child) { 
+    if (child != NO_PID) {
+        kill(children[processes[child][0],SIGCONT]);
+        running_process = minproc; 
+
+    }
+
+}
+
+/*     PROTOTYPE FUNCTION      */
+void create_child (int new_process_num) { 
+    if (running_process != NO_PROCESS)
+        stop_child(running_process);
+
+    running_process = new_process_num;
+    if (children[processes[new_process_num][0]] > 0) { 
+        int child_pid; 
+        child_pid = fork(); 
+        if (child_pid == 0)
+            execlp("./child", "./child", "p", new_process_num, (char *)NULL);
+        else {
+            children[process[new_process_num][0]] = child_pid; 
+            running_process = new_process_num;
+        }
+    }
+}
+
+/*     PROTOTYPE FUNCTION      */
+void stop_child(int child) { 
+    if (child != NO_PID)
+        kill(children[processes[child][0]],SIGTSTP); //pause current process
+}
+
+/*     PROTOTYPE FUNCTION      */
+void terminate_child(int child) { 
+    if (child != NO_PID)
+        kill(children[processes[child][0]],SIGTERM);
+}
+
+
+/*
+    Function Name: manage_children
+    Input to the method: minproc, the process with the minimum burst time
+    Output(Return value): n/a
+    Brief description of the task: uses minproc to fork a child process if none exist,
+        otherwise sends kill commands to manage children
+*/
+    //need to make a list keeping track of process number and PID correlations
+void manage_children(int minproc) {
+    
+    //if there is no running process
+    if(running_process == -1) {
+        create_child(minproc);
+        else {
+            //start pid at children[processes[minproc][0]]
+            continue_child(minproc);
+            printf("Run existing process %d\n", running_process);
+        }
+    }
+
+    // else if the minimum burst process is currently running
+    else if(minproc == running_process) {
+        //do nothing, current process keeps running
+        printf("Let current process run %d\n", running_process);
+    }
+
+    // else, pause the current process, and fork to the one with the lowest burst time
+    else {
+        stop_child(running_process);
+        running_process = minproc;
+        //if a child doesn't exist for the given process num, start one
+        create_child(minproc);
+        //send a continue signal to a process if it has the lowest burst.
+        else {
+            continue_child(minproc);
+            running_process = minproc;
+        }
+        printf("Pause current process and start new one %d\n", running_process);
+    }
 }
 
 /*
@@ -186,95 +268,12 @@ void on_clock_tick() {
     manage_children(minproc);
 }
 
-
-/*
-    Function Name: manage_children
-    Input to the method: minproc, the process with the minimum burst time
-    Output(Return value): n/a
-    Brief description of the task: uses minproc to fork a child process if none exist,
-        otherwise sends kill commands to manage children
-*/
-    //need to make a list keeping track of process number and PID correlations
-void manage_children(int minproc) {
-    
-    //if there is no running process
-    if(running_process == -1) {
-        create_child(minproc);
-        else {
-            //start pid at children[processes[minproc][0]]
-            continue_child(minproc);
-            printf("Run existing process %d\n", running_process);
-        }
-    }
-
-    // else if the minimum burst process is currently running
-    else if(minproc == running_process) {
-        //do nothing, current process keeps running
-        printf("Let current process run %d\n", running_process);
-    }
-
-    // else, pause the current process, and fork to the one with the lowest burst time
-    else {
-        stop_child(running_process);
-        running_process = minproc;
-        //if a child doesn't exist for the given process num, start one
-        create_child(minproc);
-        //send a continue signal to a process if it has the lowest burst.
-        else {
-            continue_child(minproc)
-            running_process = minproc;
-        }
-        printf("Pause current process and start new one %d\n", running_process);
-    }
-}
-
-/*     PROTOTYPE FUNCTION      */
-void continue_child(int child) { 
-    if (child != NO_PID) {
-        kill(children[processes[child][0],SIGCONT]);
-        running_process = minproc; 
-
-    }
-
-}
-
-/*     PROTOTYPE FUNCTION      */
-void create_child (int new_process_num) { 
-    if (running_process != NO_PROCESS)
-        stop_child(running_process)
-
-    running_process = new_process_num;
-    if (children[processes[new_process_num][0]] > 0) { 
-        int child_pid; 
-        child_pid = fork(); 
-        if (child_pid == 0)
-            execlp("./child", "./child", "p", new_process_num, (char *)NULL);
-        else {
-            children[process[new_process_num][0]] = child_pid; 
-            running_process = new_process_num
-        }
-    }
-}
-
-/*     PROTOTYPE FUNCTION      */
-void stop_child(int child) { 
-    if (child != NO_PID)
-        kill(children[processes[child][0]],SIGTSTP); //pause current process
-}
-
-/*     PROTOTYPE FUNCTION      */
-void terminate_child(int child) { 
-    if (child != NO_PID)
-        kill(children[processes[child][0]],SIGTERM);
-}
-
-
 /*
     Function Name: main
     Input to the method: argc and argv, input arguments
     Output(Return value): return 0, used to denote completion of program
-    Brief description of the task:_________
-        ___________________________________
+    Brief description of the task: controls the process list and starts the timer
+        sets the process list for use by the program
 */
 int main(int argc, char *argv[]) {
     char *file_name = argv[1];
@@ -282,7 +281,7 @@ int main(int argc, char *argv[]) {
     running_process = -1;
     ended_processes = 0;
     int i;
-    for(i = 0; i<lines; i++) {
+    for(i = 0; i < lines; i++) {
         printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
 
     }
