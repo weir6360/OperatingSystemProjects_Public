@@ -7,11 +7,15 @@
         use by srtfScheduler.c    
 */
 
+#include <inttypes.h>
+#include <math.h>
 #include <signal.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 #include "child.h"
 #include "srtfScheduler.h"
@@ -59,9 +63,9 @@ void start_timer() {
         exit(EXIT_FAILURE);
     }
 
-    //
+    //while-loop for timer iteration
     while (1) {
-        //while-loop
+        //do nothing
     }
 
 

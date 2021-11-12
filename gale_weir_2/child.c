@@ -10,17 +10,17 @@
 
 #include <inttypes.h>
 #include <math.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <signal.h>
-#include <string.h>
+#include <time.h>
+#include <unistd.h>
 #include "child.h"
 #include "srtfScheduler.h"
 #include "timer.h"
-#include <unistd.h>
 
 const unsigned long long int PRIME_LOWER_BOUND = 1000000000;
 const unsigned long long int PRIME_UPPER_BOUND = 9999999999; 
@@ -60,9 +60,9 @@ unsigned long long int generate_random_number() {
 /*
     Function Name: check_prime_num
     Input to the method: n/a
-    Output(Return value): 
-    Brief description of the task:_________
-        ___________________________________
+    Output(Return value): is_prime, a variable used to determine if a given number is prime or not. 
+    Brief description of the task: Uses a while-loop to determine if the current highest
+        number being tested is a prime number
 */
 int check_prime_num () { 
     unsigned long long int iterator = 2; 
@@ -81,14 +81,15 @@ int check_prime_num () {
 }
 
 /*
-    Function Name: check_prime_num
-    Input to the method: 
-    Output(Return value): ___
-    Brief description of the task:_________
-        ___________________________________
+    Function Name: check_child_args
+    Input to the method: argc and argv, passed from the main 
+    Output(Return value): n/a
+    Brief description of the task: sets the child's process id by reading
+        given args.
 */
 void check_child_args(int argc, char *argv[]) { 
     char c; 
+    //while-loop to parse args
     while ((c = getopt(argc, argv, "p:")) != -1) {
         if (c == 'p') {
             child_process_num = atoi(optarg);
@@ -98,11 +99,12 @@ void check_child_args(int argc, char *argv[]) {
 }
 
 /*
-    Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
-    Brief description of the task:_________
-        ___________________________________
+    Function Name: check_child_signal
+    Input to the method: numeric signal, passed as an int
+    Output(Return value): n/a
+    Brief description of the task: signal handler, 
+        sends different instructions to the child based on which
+        signal it heard.  
 */
 void check_child_signal(int signal) {
     switch (signal) { 
@@ -129,11 +131,12 @@ void check_child_signal(int signal) {
 }
 
 /*
-    Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
-    Brief description of the task:_________
-        ___________________________________
+    Function Name: main
+    Input to the method: argc and argv, passed from the parent process
+    Output(Return value): n/a
+    Brief description of the task: handles initialization of child variables
+        and begins the process of setting up the child's timer and signal handling, 
+        ending with a while loop to check the current prime number on clock tics. 
 */
 int main (int argc, char **argv) {
     //grab the needed elements from the arguments

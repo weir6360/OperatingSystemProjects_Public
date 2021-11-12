@@ -5,14 +5,17 @@
     Name of this file: srtfScheduler.c
     Description of the program: Handles file parsing and scheduler algorithm
         Creates child forks when needed, and sends signals to children. 
-
 */
 
+#include <inttypes.h>
+#include <math.h>
 #include <signal.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 #include "child.h"
 #include "srtfScheduler.h"
@@ -21,22 +24,26 @@
 int **processes;
 int lines;
 int time;
-int running_process;
+int running_process = NO_PROCESS;
 int ended_processes;
-pid_t children[10];
+int *children;
 
 /*
-Function Name: 
-Input to the method: 
-Output(Return value):
-Brief description of the task: s
+Function Name: count_lines
+Input to the method: file_name, the name of the current file
+Output(Return value): count, the number of lines in the read file
+Brief description of the task: uses a while-loop to count the number
+    of lines in the provided input file. 
 */
-int count_lines(char* filename) {
-    FILE *file_reader = fopen(filename, "r");
+int count_lines(char* file_name) {
+    //file pointer and error check if no file is provided
+    FILE *file_reader = fopen(file_name, "r");
     if(file_reader == NULL) {
         printf("File not found");
         exit(0);
     }
+    
+    // check for the header
     char header_str[100];
     fgets(header_str, 100, file_reader);
     int count = 0;
@@ -47,27 +54,40 @@ int count_lines(char* filename) {
 }
 
 /*
-    Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
-    Brief description of the task:_________
-        ___________________________________
+    Function Name: process_list
+    Input to the method: file_name, the name of the current file
+    Output(Return value): first_process, the first process identified on the list. 
+    Brief description of the task: uses the line count to read through each line
+        and store its contents (process id, arrival time and burst) in the 2d array
+        processes
 */
-int **proc_list(char* filename) {
-    lines = count_lines(filename);
+int **process_list(char* file_name) {
+    lines = count_lines(file_name);
     
-    FILE *file_reader = fopen(filename, "r");
+    //filling of array child_num 
+    int child_num[lines];
+    int i;
+    for(i = 0; i < lines; i++) {
+        child_num[i] = 0;
+    }
+    children = child_num;
+    children[0] = 0;
+    
+    //open given file to read
+    FILE *file_reader = fopen(file_name, "r");
     if(file_reader == NULL) {
         printf("File not found");
         exit(0);
     }
 
+    // get first header line
     char currstring[60];
-    fgets(currstring, 60, file_reader); //get first header line
-    //printf("%s", currstring); //don't need for program was for debugging
+    fgets(currstring, 60, file_reader); 
     int **first_process;
     first_process = malloc(sizeof(int*) * lines);
     int j;
+
+    //for-loop, assigning elements to [j][x] for process num, AT and Burst
     for(j=0; j<lines; j++) {
         first_process[j] = malloc(sizeof(int*) * 3);
         fscanf(file_reader, "%d", &first_process[j][0]);
@@ -81,11 +101,13 @@ int **proc_list(char* filename) {
 
 //removes a terminated row
 /*
-    Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
-    Brief description of the task:_________
-        ___________________________________
+    Function Name: remove_one_row
+    Input to the method: input, the index to remove from the array
+    Output(Return value): first_process, the next process with shortest
+        burst to start running once terminated
+    Brief description of the task: remove the element of the children array
+        at the provided index by moving other elements to a new array to give to processes,
+        and returning the index of the new process to start. 
 */
 int **remove_one_row(int **input) {
     kill(children[processes[running_process][0]],SIGTERM);
@@ -113,9 +135,9 @@ int **remove_one_row(int **input) {
 }
 
 /*
-    Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
+    Function Name: on_clock_tick
+    Input to the method: n/a
+    Output(Return value): n/a
     Brief description of the task:_________
         ___________________________________
 */
@@ -165,67 +187,98 @@ void on_clock_tick() {
 }
 
 
-
+/*
+    Function Name: manage_children
+    Input to the method: minproc, the process with the minimum burst time
+    Output(Return value): n/a
+    Brief description of the task: uses minproc to fork a child process if none exist,
+        otherwise sends kill commands to manage children
+*/
     //need to make a list keeping track of process number and PID correlations
 void manage_children(int minproc) {
     
+    //if there is no running process
     if(running_process == -1) {
-        if(children[processes[minproc][0]] == 0) {
-            printf("F O R K\n\n");
-            children[minproc] = fork();
-            if (children[minproc] == 0) {
-                char *minarg;
-                sprintf(minarg, "%d", minproc);
-                execlp("./child", "./child", "p", minproc, (char *)NULL);
-            }
-            else {
-                running_process = minproc;
-                printf("Make new process %d\n", running_process);
-            }
-        }
+        create_child(minproc);
         else {
-            kill(children[processes[minproc][0]],SIGCONT);//start pid at children[processes[minproc][0]]
-            running_process = minproc;
+            //start pid at children[processes[minproc][0]]
+            continue_child(minproc);
             printf("Run existing process %d\n", running_process);
         }
-
     }
+
+    // else if the minimum burst process is currently running
     else if(minproc == running_process) {
         //do nothing, current process keeps running
         printf("Let current process run %d\n", running_process);
     }
-    else{
-        kill(children[processes[running_process][0]],SIGTSTP);//pause current process
+
+    // else, pause the current process, and fork to the one with the lowest burst time
+    else {
+        stop_child(running_process);
         running_process = minproc;
-        if(children[processes[minproc][0]] == 0) {
-            printf("F O R K\n\n");
-            children[minproc] = fork();
-            if (children[minproc] == 0) {
-                execlp("./child", "./child", "p", minproc, (char *)NULL);
-            }
-            else {
-                running_process = minproc;
-                printf("Make new process %d\n", running_process);
-            }
-        }
+        //if a child doesn't exist for the given process num, start one
+        create_child(minproc);
+        //send a continue signal to a process if it has the lowest burst.
         else {
-            kill(children[processes[minproc][0]],SIGCONT);//start pid at children[processes[minproc][0]]
+            continue_child(minproc)
             running_process = minproc;
         }
         printf("Pause current process and start new one %d\n", running_process);
     }
 }
 
+/*     PROTOTYPE FUNCTION      */
+void continue_child(int child) { 
+    if (child != NO_PID) {
+        kill(children[processes[child][0],SIGCONT]);
+        running_process = minproc; 
+
+    }
+
+}
+
+/*     PROTOTYPE FUNCTION      */
+void create_child (int new_process_num) { 
+    if (running_process != NO_PROCESS)
+        stop_child(running_process)
+
+    running_process = new_process_num;
+    if (children[processes[new_process_num][0]] > 0) { 
+        int child_pid; 
+        child_pid = fork(); 
+        if (child_pid == 0)
+            execlp("./child", "./child", "p", new_process_num, (char *)NULL);
+        else {
+            children[process[new_process_num][0]] = child_pid; 
+            running_process = new_process_num
+        }
+    }
+}
+
+/*     PROTOTYPE FUNCTION      */
+void stop_child(int child) { 
+    if (child != NO_PID)
+        kill(children[processes[child][0]],SIGTSTP); //pause current process
+}
+
+/*     PROTOTYPE FUNCTION      */
+void terminate_child(int child) { 
+    if (child != NO_PID)
+        kill(children[processes[child][0]],SIGTERM);
+}
+
+
 /*
-    Function Name: check_prime_num
-    Input to the method: ___
-    Output(Return value): ___
+    Function Name: main
+    Input to the method: argc and argv, input arguments
+    Output(Return value): return 0, used to denote completion of program
     Brief description of the task:_________
         ___________________________________
 */
 int main(int argc, char *argv[]) {
-    char *filename = argv[1];
-    processes = proc_list(filename);
+    char *file_name = argv[1];
+    processes = process_list(file_name);
     running_process = -1;
     ended_processes = 0;
     int i;
