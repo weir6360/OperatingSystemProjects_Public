@@ -13,9 +13,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <string.h>
 #include "child.h"
 #include "srtfScheduler.h"
 #include "timer.h"
+#include <unistd.h>
 
 const unsigned long long int PRIME_LOWER_BOUND = 1000000000;
 const unsigned long long int PRIME_UPPER_BOUND = 9999999999; 
@@ -60,14 +65,14 @@ unsigned long long int generate_random_number() {
         ___________________________________
 */
 int check_prime_num () { 
-    unsigned long long int range = sqrt(highest_prime); 
-    unsigned long long int iterator = 3; 
+    unsigned long long int iterator = 2; 
 
     //while the current prime number is in range of the iteration, continue increasing the iterator
     //checks up to the square-root of the current prime
-    while (is_prime == 1 && iterator <= range) {
-        int is_prime = 1; 
-        if ((highest_prime % iterator) == 0) {
+    int is_prime = 1;
+    while (is_prime == 1 && iterator < (child_prime/2)) {
+        
+        if ((child_prime % iterator) == 0) {
             is_prime = 0; 
         }
         iterator++; 
@@ -83,9 +88,9 @@ int check_prime_num () {
         ___________________________________
 */
 void check_child_args(int argc, char *argv[]) { 
-    int c; 
+    char c; 
     while ((c = getopt(argc, argv, "p:")) != -1) {
-        if (c == "p") {
+        if (c == 'p') {
             child_process_num = atoi(optarg);
         }
 
@@ -135,13 +140,13 @@ int main (int argc, char **argv) {
     check_child_args(argc, argv);
     child_pid = getpid(); 
     child_prime = generate_random_number();
-    printf("Process %d: my PID is %d: I just got started. \nI am starting with the number"
+    printf("Process %d: my PID is %d: I just got started. \nI am starting with the number "
     "%llu to find the next prime number.\n",
     child_process_num, child_pid, child_prime);
 
     //set and create sigaction object to interact with srtfScheduler.c
     struct sigaction actor; 
-    memset(&actor, sizeof(actor));
+    memset(&actor, 0, sizeof(actor));
     actor.sa_handler = check_child_signal;
     sigaction (SIGCONT, &actor, NULL);
     sigaction (SIGTERM, &actor, NULL); 

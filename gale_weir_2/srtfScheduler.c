@@ -8,10 +8,12 @@
 
 */
 
-
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 #include "child.h"
 #include "srtfScheduler.h"
 #include "timer.h"
@@ -21,6 +23,7 @@ int lines;
 int time;
 int running_process;
 int ended_processes;
+int *children;
 
 /*
 Function Name: 
@@ -52,6 +55,15 @@ int count_lines(char* filename) {
 */
 int **proc_list(char* filename) {
     lines = count_lines(filename);
+    
+    
+    int child_num[lines];
+    int i;
+    for(i = 0; i < lines; i++) {
+        child_num[i] = 0;
+    }
+    children = child_num;
+    children[0] = 0;
     
     FILE *file_reader = fopen(filename, "r");
     if(file_reader == NULL) {
@@ -157,23 +169,58 @@ void on_clock_tick() {
             minproc = j;
         }
     }
+    manage_children(minproc);
+}
+
+
+
     //need to make a list keeping track of process number and PID correlations
+void manage_children(int minproc) {
+    
     if(running_process == -1) {
-        //check if minproc already exists (processes[minproc][0] in proc id list)
-        //start minproc if exists, if not make a new one (fork)
-        
-        running_process = minproc;
-        printf("Make new process %d\n", running_process);
+        if(children[processes[minproc][0]] > 0) {
+            int child_pid;
+            printf("F O R K\n\n");
+            child_pid = fork();
+            if (child_pid == 0) {
+                execlp("./child", "./child", "p", minproc, NULL);
+            }
+            else {
+                children[processes[minproc][0]] = child_pid;
+                running_process = minproc;
+                printf("Make new process %d\n", running_process);
+            }
+        }
+        else {
+            kill(children[processes[minproc][0]],SIGCONT);//start pid at children[processes[minproc][0]]
+            running_process = minproc;
+            printf("Run existing process %d\n", running_process);
+        }
+
     }
     else if(minproc == running_process) {
         //do nothing, current process keeps running
         printf("Let current process run %d\n", running_process);
     }
     else{
-        //pause running_process
+        //pause running_process - pid at children[processes[running_process][0]]
         running_process = minproc;
-        //check if 'new' process already exists
-        //start minproc if exists, if not make a new one(fork)
+        if(children[processes[minproc][0]] > 0) {
+            int child_pid;
+            printf("F O R K\n\n");
+            child_pid = fork();
+            if (child_pid == 0) {
+                execlp("./child", "./child", "p", minproc, NULL);
+            }
+            else {
+                children[processes[minproc][0]] = child_pid;
+                running_process = minproc;
+                printf("Make new process %d\n", running_process);
+            }
+        }
+        else {
+            //start pid at children[processes[minproc][0]]
+        }
         printf("Pause current process and start new one %d\n", running_process);
     }
 }
