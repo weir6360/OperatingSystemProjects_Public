@@ -13,9 +13,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/current_time.h>
+#include <sys/time.h>
 #include <sys/types.h>
-#include <current_time.h>
+#include <time.h>
 #include <unistd.h>
 #include "child.h"
 #include "srtfScheduler.h"
@@ -115,9 +115,9 @@ int **remove_one_row(int **input) {
     first_process = malloc(sizeof(int*) * (lines - ended_processes));
     int j;
     int offset = 0;
-    for(j = 0; j < (lines - ended_processes+1); j++) {
+    for(j = 0; j < (lines - ended_processes + 1); j++) {
         int k = (j - offset);
-        if(j == running_process) {
+        if (j == running_process) {
             offset++;
         }
         else {
@@ -136,7 +136,7 @@ int **remove_one_row(int **input) {
 
 /*     PROTOTYPE FUNCTION      */
 void continue_child(int child) { 
-    if (child != NO_PID) {
+    if (child != 0) {
         kill(children[processes[child][0]],SIGCONT);
         running_process = child; 
     }
@@ -145,7 +145,7 @@ void continue_child(int child) {
 
 /*     PROTOTYPE FUNCTION      */
 void create_child (int new_process_num) { 
-    if (running_process != NO_PROCESS)
+    if (running_process != -1)
         stop_child(running_process);
 
     running_process = new_process_num;
@@ -163,13 +163,13 @@ void create_child (int new_process_num) {
 
 /*     PROTOTYPE FUNCTION      */
 void stop_child(int child) { 
-    if (child != NO_PID)
+    if (child != 0)
         kill(children[processes[child][0]],SIGTSTP); //pause current process
 }
 
 /*     PROTOTYPE FUNCTION      */
 void terminate_child(int child) { 
-    if (child != NO_PID)
+    if (child != 0)
         kill(children[processes[child][0]],SIGTERM);
 }
 
