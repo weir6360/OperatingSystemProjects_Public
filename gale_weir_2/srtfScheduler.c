@@ -1,7 +1,7 @@
 /*
     Author: Alex Gale, Gabe Weir
     Assignment Number: 2
-    Date of Submission: 11/11/2021
+    Date of Submission: 11/12/2021
     Name of this file: srtfScheduler.c
     Description of the program: Handles file parsing and scheduler algorithm
         Creates child forks when needed, and sends signals to children. 
@@ -64,7 +64,7 @@ int count_lines(char* file_name) {
 int **process_list(char* file_name) {
     lines = count_lines(file_name);
     
-    //filling of array child_num 
+    //filling of array child_num with initialized 0s
     int *child_num;
     child_num = malloc(sizeof(int*) * 10);
     int i;
@@ -100,7 +100,6 @@ int **process_list(char* file_name) {
     return first_process;
 }
 
-//removes a terminated row
 /*
     Function Name: remove_one_row
     Input to the method: input, the index to remove from the array
@@ -111,7 +110,9 @@ int **process_list(char* file_name) {
         and returning the index of the new process to start. 
 */
 int **remove_one_row(int **input) {
+    //terminate the running process that has its time at 0
     terminate_child(running_process);
+    //make a new array one line shorter
     int **first_process;
     first_process = malloc(sizeof(int*) * (lines - ended_processes));
     int j;
@@ -126,14 +127,10 @@ int **remove_one_row(int **input) {
         else {
             first_process[k] = malloc(sizeof(int*) * 3);
             first_process[k] = input[j];
-        }
+        }//effectively, j is read head and k is write head
         
     }
-    int i;
-    for(i = 0; i < lines - ended_processes; i++) {
-        printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
-
-    }
+    
     return first_process;
 }
 
@@ -156,25 +153,26 @@ void continue_child(int child) {
     Brief description of the task: creates a child object to be forked outwards. 
 */
 void create_child (int new_process_num) { 
+    //if there is a running process, stop it.
     if (running_process != -1) {
-        
         stop_child(running_process);
     }
     running_process = new_process_num;
-    
+    //if there is not a process for this process number yet, make one
     if (children[processes[new_process_num][0]] == 0) { 
         int child_pid; 
         child_pid = fork(); 
+        //child runs if
         if (child_pid == 0) {
             char sending[10];
             sprintf(sending, "-p %d", processes[new_process_num][0]);
             execlp("./child", "./child", sending, (char *)NULL);
-        }
+        }//parent runs else
         else {
             children[processes[new_process_num][0]] = child_pid; 
             running_process = new_process_num;
         }
-    }
+    }//otherwise continue the exsisting process
     else {
         continue_child(new_process_num);
     }
@@ -209,28 +207,20 @@ void manage_children(int minproc) {
     //if there is no running process
     if(running_process == -1) {
         create_child(minproc);
-        //start pid at children[processes[minproc][0]]
-        
-        printf("Run existing process %d\n", running_process);
-        
+        printf("Scheduling process %d (PID %d) whose remaining time is %d seconds\n", processes[minproc][0], children[processes[minproc][0]], processes[minproc][2]);
     }
 
     // else if the minimum burst process is currently running
     else if(minproc == running_process) {
         //do nothing, current process keeps running
-        printf("Let current process run %d\n", running_process);
+        printf("Continuing to run process %d (PID %d) whose remaining time is %d seconds\n", processes[minproc][0], children[processes[minproc][0]], processes[minproc][2]);
     }
 
-    // else, pause the current process, and fork to the one with the lowest burst current_time
+    // else, pause the current process, and fork to the one with the lowest burst
     else {
         create_child(minproc);
+        printf("Pausing process and starting process %d (PID %d) whose remaining time is %d seconds\n", processes[minproc][0], children[processes[minproc][0]], processes[minproc][2]);
         running_process = minproc;
-        //if a child doesn't exist for the given process num, start one
-        
-        //send a continue signal to a process if it has the lowest burst.
-        
-        
-        printf("Pause current process and start new one %d\n", running_process);
     }
 }
 
@@ -244,26 +234,28 @@ void manage_children(int minproc) {
 void on_clock_tick() {
     //count up current_time, and check how many of the processes have arrived
     current_time++;
+    printf("\nCurrent time: %d\n", current_time);
+    //if there is a running process, decrement its remaining time, and check if it's at 0
     if(running_process != -1) {
         processes[running_process][2] = (processes[running_process][2] -1);
-        //printf("current running process current_time: %d\n", processes[running_process][2]);
         if(processes[running_process][2] <= 0) {
-            //terminate process
+            //if at 0, terminate process
             ended_processes++;
             int** new_proc = remove_one_row(processes);
             processes = new_proc;
             running_process = -1;
+            //if all the processes are done
             if(lines == ended_processes) {
                 printf("Complete!");
                 exit(0);
             }
         }
     }
-    printf("current_time: %d\n", current_time);
+    //check how many processes have arrived at the current time
     int identified_processes = 0;
     int i;
     for(i=0; i < (lines - (ended_processes)); i++) {
-        if(processes[i][1] <= current_time /*&& processes[i][1] != 0*/) {
+        if(processes[i][1] <= current_time) {
             identified_processes++;
         }
     }
@@ -273,7 +265,6 @@ void on_clock_tick() {
     int minproc = -1;
     for(j = (identified_processes-1); j >= 0; j--) {
         int current_process = processes[j][2];
-        printf("current process current_time %d\n", current_process);
         if(j == (identified_processes-1)) {
             min = current_process;
             minproc = j;

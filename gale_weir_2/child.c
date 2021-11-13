@@ -29,7 +29,7 @@ int child_pid = -1;
 int child_process_num = -1;
 
 unsigned long long int child_prime = 1000000000; // original random starting number 
-unsigned long long int highest_prime = -1;       // new highest prime number
+unsigned long long int highest_prime = 1;       // new highest prime number
 
 /*
     Function Name: generate_random_number()
@@ -160,6 +160,7 @@ int main (int argc, char **argv) {
     sigaction (SIGTERM, &sa, NULL); 
     sigaction (SIGTSTP, &sa, NULL); 
 
+    highest_prime = child_prime; 
     long long unsigned int current_prime = child_prime + 1; 
     while (1) {
         if (check_prime_num(current_prime) == 1) {
