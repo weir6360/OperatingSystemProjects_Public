@@ -152,8 +152,11 @@ void create_child (int new_process_num) {
     if (children[processes[new_process_num][0]] == 0) { 
         int child_pid; 
         child_pid = fork(); 
-        if (child_pid == 0)
-            execlp("./child", "./child", (char *)NULL);
+        if (child_pid == 0) {
+            char sending[10];
+            sprintf(sending, "-p %d", processes[new_process_num][0]);
+            execlp("./child", "./child", sending, (char *)NULL);
+        }
         else {
             children[processes[new_process_num][0]] = child_pid; 
             running_process = new_process_num;
