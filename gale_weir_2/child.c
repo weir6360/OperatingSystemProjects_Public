@@ -28,8 +28,8 @@ const unsigned long long int PRIME_UPPER_BOUND = 9999999999;
 int child_pid = -1;
 int child_process_num = -1;
 
-unsigned long long int child_prime = 1000000000; 
-unsigned long long int highest_prime = -1; 
+unsigned long long int child_prime = 1000000000; // original random starting number 
+unsigned long long int highest_prime = -1;       // new highest prime number
 
 /*
     Function Name: generate_random_number()
@@ -64,15 +64,19 @@ unsigned long long int generate_random_number() {
     Brief description of the task: Uses a while-loop to determine if the current highest
         number being tested is a prime number
 */
-int check_prime_num () { 
-    unsigned long long int iterator = 2; 
+int check_prime_num (long long unsigned int current_prime) { 
+
+    //initialize highest_prime as starting number + 1
 
     //while the current prime number is in range of the iteration, continue increasing the iterator
     //checks up to the square-root of the current prime
     int is_prime = 1;
-    while (is_prime == 1 && iterator < (child_prime/2)) {
+    
+    unsigned long long int iterator = 2; 
+
+    while (is_prime == 1 && iterator < (current_prime/2)) {
         
-        if ((child_prime % iterator) == 0) {
+        if ((current_prime % iterator) == 0) {
             is_prime = 0; 
         }
         iterator++; 
@@ -108,23 +112,24 @@ void check_child_args(int argc, char *argv[]) {
 */
 void check_child_signal(int signal) {
     switch (signal) { 
-        case SIGCONT: 
-            printf("Process %d: my PID is %d: I just got resumed. Highest prime" 
-            "number I found is %llu.\n", 
-            child_process_num, child_pid, highest_prime); 
-            break; 
-        case SIGTERM: 
-            printf("Process %d: my PID is %d: I completed. "
-            " my task and will exit. Highest prime numbe I found is %llu.\n", 
-            child_process_num, child_pid, highest_prime); 
-            exit(EXIT_SUCCESS);
-            break; 
         case SIGTSTP: 
             printf("Process %d: my PID is %d: I am about to be suspended." 
             "Highest prime number I found is %llu.\n", 
             child_process_num, child_pid, highest_prime); 
             pause(); 
             break;
+        case SIGCONT: 
+            printf("Process %d: my PID is %d: I just got resumed. Highest prime" 
+            "number I found is %llu.\n", 
+            child_process_num, child_pid, highest_prime); 
+            break; 
+        case SIGTERM: 
+            printf("Process %d: my PID is %d: I completed."
+            " my task and will exit. Highest prime number I found is %llu.\n", 
+            child_process_num, child_pid, highest_prime); 
+            exit(EXIT_SUCCESS);
+            break; 
+
         default: 
             break;
     } 
@@ -148,13 +153,19 @@ int main (int argc, char **argv) {
     child_process_num, child_pid, child_prime);
 
     //set and create sigaction object to interact with srtfScheduler.c
-    struct sigaction actor; 
-    memset(&actor, 0, sizeof(actor));
-    actor.sa_handler = check_child_signal;
-    sigaction (SIGCONT, &actor, NULL);
-    sigaction (SIGTERM, &actor, NULL); 
-    sigaction (SIGTSTP, &actor, NULL); 
-    while (1) 
-        check_prime_num();
-   
+    struct sigaction sa; 
+    memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = check_child_signal;
+    sigaction (SIGCONT, &sa, NULL);
+    sigaction (SIGTERM, &sa, NULL); 
+    sigaction (SIGTSTP, &sa, NULL); 
+
+    long long unsigned int current_prime = child_prime + 1; 
+    while (1) {
+        if (check_prime_num(current_prime) == 1) {
+            highest_prime = current_prime; 
+        }
+        current_prime++;   
+    }
+ 
 }

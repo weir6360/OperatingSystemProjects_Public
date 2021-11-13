@@ -115,12 +115,14 @@ int **remove_one_row(int **input) {
     int **first_process;
     first_process = malloc(sizeof(int*) * (lines - ended_processes));
     int j;
-    int offset = 0;
+    int offset = 0; //offset value for resizing array
     for(j = 0; j < (lines - ended_processes + 1); j++) {
         int k = (j - offset);
-        if (j == running_process) {
+        //if this is the process we want to remove, add the offset instead. 
+        if (j == running_process) { 
             offset++;
         }
+        //else, copy the contents of the array element into the new array. 
         else {
             first_process[k] = malloc(sizeof(int*) * 3);
             first_process[k] = input[j];
@@ -135,13 +137,24 @@ int **remove_one_row(int **input) {
     return first_process;
 }
 
-/*     PROTOTYPE FUNCTION      */
+/*
+    Function Name: continue_child
+    Input to the method: child, the pid of the child object
+    Output(Return value): n/a
+    Brief description of the task: sends the SIGCONT command to the child if
+        the child's pid isn't 0, causing it to continue execution. 
+*/
 void continue_child(int child) { 
     kill(children[processes[child][0]],SIGCONT);
     running_process = child; 
 }
 
-/*     PROTOTYPE FUNCTION      */
+/*
+    Function Name: create_child
+    Input to the method: new_process_num, the process number to be passed to the child
+    Output(Return value): n/a
+    Brief description of the task: creates a child object to be forked outwards. 
+*/
 void create_child (int new_process_num) { 
     if (running_process != -1) {
         
@@ -172,7 +185,13 @@ void stop_child(int child) {
     kill(children[processes[child][0]],SIGTSTP); //pause current process
 }
 
-/*     PROTOTYPE FUNCTION      */
+/*
+    Function Name: terminate_child
+    Input to the method: child, the pid of the child object
+    Output(Return value): n/a
+    Brief description of the task: sends the SIGTERM command to the child if
+        the child's pid isn't 0, causing it to terminate. 
+*/
 void terminate_child(int child) { 
     kill(children[processes[child][0]],SIGTERM);
 }
@@ -185,7 +204,6 @@ void terminate_child(int child) {
     Brief description of the task: uses minproc to fork a child process if none exist,
         otherwise sends kill commands to manage children
 */
-    //need to make a list keeping track of process number and PID correlations
 void manage_children(int minproc) {
     
     //if there is no running process

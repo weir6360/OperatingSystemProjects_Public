@@ -6,22 +6,14 @@
 */
 
 to compile: 
-    gcc 5ps.c c.c s.c t.c v.c -o 5ps
+    gcc child.c -o child
+    gcc srtfScheduler.c timer.c
 
 usage: 
-    ./a.out [options]
-
-options: 
-    -p <pid>    displays requested process id. 
-    -c          displays the command line that created the process
-    -s          displays the state of the process
-    -t          displays the time the proces took to complete
-    -v          displays the virutual memory used by the process
+    ./a.out input.txt
 
 notes: 
-    
-    This program was tested in a version of ubuntu that included a modern gui. We noticed in testing our getopt wasn't able to consistently get the p id when
-        used with this version of ubuntu, but does work with the version of ubuntu we developed within, 20.04.3
-    5ps often hits segmentation faults, depending on the PID entered. we suspect this is due to entering the PID of an important process, where the values are protected and inaccessable.
-    The time return is very often 00:00:00, though this is likely because the process took less than a second to complete, because computers are fast
-    the command-line command that started the process doesn't seem to work most of the time, we do not know how the cmdline file is formatted, and cannot make a parser as such. in testing it did work on the test machine, on PID 1.
+    This program was tested in a version of ubuntu that included a modern gui.
+    Random number generation works properly, but as of writing was running into overflow issues with testing the prime number
+    We've run into inconsistencies with children being made in our create_child; sometimes most if not all children are made, other times none of them are. 
+    We haven't seen a SIGCONT command go through properly, but SIGTSTP and SIGTERM were validated. 

@@ -1,4 +1,4 @@
-sample file, first line is bunk
+process num, arrival time, burst time
 0   1   7
 1   2   4
 2   4   6
