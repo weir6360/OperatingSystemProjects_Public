@@ -13,5 +13,8 @@ usage:
     ./a.out input.txt
 
 notes: 
-    The prime number checker, despite the formula being correct, seems to be 
-        producing non prime numbers
+    This program was developed in a version of ubuntu that included a modern gui.
+    It was tested in the class provided CLI ubuntu build and it still worked fine.
+    Random number generation works properly, but prime number checking does not. It iterates through numbers but doesn't return actual primes.
+    
+    
