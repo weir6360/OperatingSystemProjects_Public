@@ -138,8 +138,8 @@ int **remove_one_row(int **input) {
     Function Name: continue_child
     Input to the method: child, the pid of the child object
     Output(Return value): n/a
-    Brief description of the task: sends the SIGCONT command to the child if
-        the child's pid isn't 0, causing it to continue execution. 
+    Brief description of the task: sends the SIGCONT command to the child, 
+        causing it to continue execution. 
 */
 void continue_child(int child) { 
     kill(children[processes[child][0]],SIGCONT);
@@ -178,7 +178,13 @@ void create_child (int new_process_num) {
     }
 }
 
-/*     PROTOTYPE FUNCTION      */
+/*
+    Function Name: stop_child
+    Input to the method: child, the pid of the child object
+    Output(Return value): n/a
+    Brief description of the task: sends the SIGTSTP command to the child, 
+        causing it to continue execution. 
+*/
 void stop_child(int child) {
     kill(children[processes[child][0]],SIGTSTP); //pause current process
 }
@@ -187,8 +193,8 @@ void stop_child(int child) {
     Function Name: terminate_child
     Input to the method: child, the pid of the child object
     Output(Return value): n/a
-    Brief description of the task: sends the SIGTERM command to the child if
-        the child's pid isn't 0, causing it to terminate. 
+    Brief description of the task: sends the SIGTERM command to the child, 
+        causing it to terminate. 
 */
 void terminate_child(int child) { 
     kill(children[processes[child][0]],SIGTERM);
@@ -290,6 +296,8 @@ int main(int argc, char *argv[]) {
     running_process = -1;
     ended_processes = 0;
     int i;
+    
+    //for-loop to print the processes
     for(i = 0; i < lines; i++) {
         printf("%d, %d, %d\n", processes[i][0],processes[i][1],processes[i][2]);
 
