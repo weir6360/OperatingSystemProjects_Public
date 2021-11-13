@@ -149,15 +149,18 @@ void create_child (int new_process_num) {
         stop_child(running_process);
 
     running_process = new_process_num;
-    if (children[processes[new_process_num][0]] > 0) { 
+    if (children[processes[new_process_num][0]] == 0) { 
         int child_pid; 
         child_pid = fork(); 
         if (child_pid == 0)
-            execlp("./child", "./child", "p", new_process_num, (char *)NULL);
+            execlp("./child", "./child", (char *)NULL);
         else {
-            children[process[new_process_num][0]] = child_pid; 
+            children[processes[new_process_num][0]] = child_pid; 
             running_process = new_process_num;
         }
+    }
+    else {
+        continue_child(new_process_num);
     }
 }
 
@@ -188,7 +191,7 @@ void manage_children(int minproc) {
     if(running_process == -1) {
         create_child(minproc);
         //start pid at children[processes[minproc][0]]
-        continue_child(minproc);
+        
         printf("Run existing process %d\n", running_process);
         
     }
@@ -206,7 +209,7 @@ void manage_children(int minproc) {
         //if a child doesn't exist for the given process num, start one
         create_child(minproc);
         //send a continue signal to a process if it has the lowest burst.
-        continue_child(minproc);
+        
         running_process = minproc;
         
         printf("Pause current process and start new one %d\n", running_process);
