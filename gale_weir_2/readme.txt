@@ -13,7 +13,8 @@ usage:
     ./a.out input.txt
 
 notes: 
-    This program was tested in a version of ubuntu that included a modern gui.
-    Random number generation works properly, but as of writing was running into overflow issues with testing the prime number
-    We've run into inconsistencies with children being made in our create_child; sometimes most if not all children are made, other times none of them are. 
-    We haven't seen a SIGCONT command go through properly, but SIGTSTP and SIGTERM were validated. 
+    This program was developed in a version of ubuntu that included a modern gui.
+    It was tested in the class provided CLI ubuntu build and it still worked fine.
+    Random number generation works properly, but prime number checking does not. It iterates through numbers but doesn't return actual primes.
+    
+    
