@@ -65,13 +65,14 @@ int **process_list(char* file_name) {
     lines = count_lines(file_name);
     
     //filling of array child_num 
-    int child_num[lines];
+    int *child_num;
+    child_num = malloc(sizeof(int*) * 10);
     int i;
-    for(i = 0; i < lines; i++) {
+    for(i = 0; i < 10; i++) {
         child_num[i] = 0;
     }
     children = child_num;
-    children[0] = 0;
+    
     
     //open given file to read
     FILE *file_reader = fopen(file_name, "r");
@@ -136,19 +137,18 @@ int **remove_one_row(int **input) {
 
 /*     PROTOTYPE FUNCTION      */
 void continue_child(int child) { 
-    if (child != 0) {
-        kill(children[processes[child][0]],SIGCONT);
-        running_process = child; 
-    }
-
+    kill(children[processes[child][0]],SIGCONT);
+    running_process = child; 
 }
 
 /*     PROTOTYPE FUNCTION      */
 void create_child (int new_process_num) { 
-    if (running_process != -1)
+    if (running_process != -1) {
+        
         stop_child(running_process);
-
+    }
     running_process = new_process_num;
+    
     if (children[processes[new_process_num][0]] == 0) { 
         int child_pid; 
         child_pid = fork(); 
@@ -165,15 +165,13 @@ void create_child (int new_process_num) {
 }
 
 /*     PROTOTYPE FUNCTION      */
-void stop_child(int child) { 
-    if (child != 0)
-        kill(children[processes[child][0]],SIGTSTP); //pause current process
+void stop_child(int child) {
+    kill(children[processes[child][0]],SIGTSTP); //pause current process
 }
 
 /*     PROTOTYPE FUNCTION      */
 void terminate_child(int child) { 
-    if (child != 0)
-        kill(children[processes[child][0]],SIGTERM);
+    kill(children[processes[child][0]],SIGTERM);
 }
 
 
@@ -204,13 +202,12 @@ void manage_children(int minproc) {
 
     // else, pause the current process, and fork to the one with the lowest burst current_time
     else {
-        stop_child(running_process);
+        create_child(minproc);
         running_process = minproc;
         //if a child doesn't exist for the given process num, start one
-        create_child(minproc);
+        
         //send a continue signal to a process if it has the lowest burst.
         
-        running_process = minproc;
         
         printf("Pause current process and start new one %d\n", running_process);
     }
