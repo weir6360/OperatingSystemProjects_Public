@@ -160,6 +160,7 @@ int main (int argc, char **argv) {
     sigaction (SIGTERM, &sa, NULL); 
     sigaction (SIGTSTP, &sa, NULL); 
 
+    //while-loop for iterating the current prime. 
     highest_prime = child_prime; 
     long long unsigned int current_prime = child_prime + 1; 
     while (1) {
