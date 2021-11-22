@@ -9,6 +9,7 @@
 
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <semaphore.h>
 #include <unistd.h>
 
@@ -16,9 +17,10 @@ sem_t one_die;
 sem_t two_dice;
 sem_t four_dice;
 sem_t five_dice;
+sem_t one_less;
 
 unsigned int line_front = 0;
-    
+unsigned int one_less_queue = 1;
 
 
 int groups_running = 8;
@@ -53,7 +55,7 @@ void thread_task(int i) {
     if(i == 0) {
         //run front desk
         int dice = 8;
-        printf("I am the front desk\n");
+        printf("I am the front desk, starting with 8 dice.\n");
         while(groups_running != 0){
             int j;
             for(j = 0; j < 9; j++){
@@ -67,8 +69,8 @@ void thread_task(int i) {
                 for(k = 0; k < 9; k++){
                     if(queue[k] != 0){
                         if(queue[k] <= dice){
-                            printf("before loans, I have %d dice\n", dice);
-                            printf("Loaning out %d dice.\n", queue[k]);
+                            printf("Front Desk: Before loans, I have %d dice\n", dice);
+                            printf("Front Desk: Loaning out %d dice.\n", queue[k]);
                             switch(queue[k]){
                                 case 1:
                                     sem_post(&one_die);
@@ -99,45 +101,52 @@ void thread_task(int i) {
         int dice_num = die_amount[i];
         char *current_game = games[i];
         int c;
+        time_t seed_time;
+        srand((unsigned) time(&seed_time) + i);
         for(c = 0; c < 5; c++){
-            printf("I want to play %s, and I need %d dice for that. This is game %d\n", current_game, dice_num, c+1);
+            int random = (rand() % 5);
+            sleep(random);
+
+            printf("Group %d: I want to play %s, and I need %d dice for that. This is game %d\n", i, current_game, dice_num, c+1);
             switch(dice_num){
                 case 1 :
                     queue[i] = 1;
                     sem_wait(&one_die);
-                    printf("starting my game of %s\n", current_game);
-                    sleep(1);
-                    printf("a one die finished\n");
+                    printf("Group %d: Starting my game of %s\n", i, current_game);
+                    sleep(random + 5);
+                    printf("Group %d: We have finished our game of %s and are returning %d dice\n", i, current_game, dice_num);
                     return_queue[i] = 1;
                     break;
                 case 2 :
                     queue[i] = 2;
                     sem_wait(&two_dice);
-                    printf("starting my game of %s\n", current_game);
-                    sleep(1);
-                    printf("a two die finished\n");
+                    printf("Group %d: Starting my game of %s\n", i, current_game);
+                    sleep(random + 5);
+                    printf("Group %d: We have finished our game of %s and are returning %d dice\n", i, current_game, dice_num);
                     return_queue[i] = 2;
                     break;
                 case 4 :
                     queue[i] = 4;
                     sem_wait(&four_dice);
-                    printf("starting my game of %s\n", current_game);
-                    sleep(1);
-                    printf("a four die finished\n");
+                    printf("Group %d: Starting my game of %s\n", i, current_game);
+                    sleep(random + 5);
+                    printf("Group %d: We have finished our game of %s and are returning %d dice\n", i, current_game, dice_num);
                     return_queue[i] = 4;
                     break;
                 case 5 :
                     queue[i] = 5;
                     sem_wait(&five_dice);
-                    printf("starting my game of %s\n", current_game);
-                    sleep(1);
-                    printf("a five die finished\n");
+                    printf("Group %d: Starting my game of %s\n", i, current_game);
+                    sleep(random + 5);
+                    printf("Group %d: We have finished our game of %s and are returning %d dice\n", i, current_game, dice_num);
                     return_queue[i] = 5;
-                    break;
             }
 
         }
+        sem_wait(&one_less);
         groups_running--;
+        printf("Group %d: We are done playing and are leaving the parlor.\n\n", i);
+        sem_post(&one_less);
     }
 
     pthread_exit(0); // this code returns to the corresponding pthread_join issued in main()
@@ -150,6 +159,7 @@ int main()
     sem_init(&two_dice, 1, line_front);
     sem_init(&four_dice, 1, line_front);
     sem_init(&five_dice, 1, line_front);
+    sem_init(&one_less, 1, one_less_queue);
 
     pthread_t thread_id[9];
     // The following code creates 5 threads.
