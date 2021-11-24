@@ -1,0 +1,218 @@
+nope@nope-VirtualBox:~/Desktop/Gitkraken Repos/OperatingSystemProjects_Public/gale_weir_3$ ./a.out
+I am the front desk, starting with 8 dice.
+Group 4: I want to play Risk, and I need 5 dice for that. This is game 1
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 4: Starting my game of Risk
+Group 6: I want to play Monopoly, and I need 2 dice for that. This is game 1
+Front Desk: Before loans, I have 3 dice
+Front Desk: Loaning out 2 dice.
+Group 6: Starting my game of Monopoly
+Group 5: I want to play Monopoly, and I need 2 dice for that. This is game 1
+Group 1: I want to play Backgammon, and I need 4 dice for that. This is game 1
+Group 2: I want to play Backgammon, and I need 4 dice for that. This is game 1
+Group 3: I want to play Risk, and I need 5 dice for that. This is game 1
+Group 7: I want to play Pictionary, and I need 1 dice for that. This is game 1
+Group 8: I want to play Pictionary, and I need 1 dice for that. This is game 1
+Front Desk: Before loans, I have 1 dice
+Front Desk: Loaning out 1 dice.
+Group 7: Starting my game of Pictionary
+Group 4: We have finished our game of Risk and are returning 5 dice
+Group 4: I want to play Risk, and I need 5 dice for that. This is game 2
+Front Desk: Before loans, I have 5 dice
+Front Desk: Loaning out 4 dice.
+Group 1: Starting my game of Backgammon
+Front Desk: Before loans, I have 1 dice
+Front Desk: Loaning out 1 dice.
+Group 8: Starting my game of Pictionary
+Group 6: We have finished our game of Monopoly and are returning 2 dice
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 2 dice.
+Group 5: Starting my game of Monopoly
+Group 7: We have finished our game of Pictionary and are returning 1 dice
+Group 7: I want to play Pictionary, and I need 1 dice for that. This is game 2
+Front Desk: Before loans, I have 1 dice
+Group 6: I want to play Monopoly, and I need 2 dice for that. This is game 2
+Front Desk: Loaning out 1 dice.
+Group 7: Starting my game of Pictionary
+Group 1: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 4 dice
+Front Desk: Loaning out 4 dice.
+Group 2: Starting my game of Backgammon
+Group 8: We have finished our game of Pictionary and are returning 1 dice
+Group 5: We have finished our game of Monopoly and are returning 2 dice
+Front Desk: Before loans, I have 3 dice
+Front Desk: Loaning out 2 dice.
+Group 6: Starting my game of Monopoly
+Group 8: I want to play Pictionary, and I need 1 dice for that. This is game 2
+Front Desk: Before loans, I have 1 dice
+Front Desk: Loaning out 1 dice.
+Group 8: Starting my game of Pictionary
+Group 7: We have finished our game of Pictionary and are returning 1 dice
+Group 1: I want to play Backgammon, and I need 4 dice for that. This is game 2
+Group 5: I want to play Monopoly, and I need 2 dice for that. This is game 2
+Group 7: I want to play Pictionary, and I need 1 dice for that. This is game 3
+Front Desk: Before loans, I have 1 dice
+Front Desk: Loaning out 1 dice.
+Group 7: Starting my game of Pictionary
+Group 2: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 4 dice
+Group 2: I want to play Backgammon, and I need 4 dice for that. This is game 2
+Front Desk: Loaning out 4 dice.
+Group 1: Starting my game of Backgammon
+Group 8: We have finished our game of Pictionary and are returning 1 dice
+Group 6: We have finished our game of Monopoly and are returning 2 dice
+Front Desk: Before loans, I have 3 dice
+Front Desk: Loaning out 2 dice.
+Group 5: Starting my game of Monopoly
+Group 7: We have finished our game of Pictionary and are returning 1 dice
+Group 8: I want to play Pictionary, and I need 1 dice for that. This is game 3
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 1 dice.
+Group 8: Starting my game of Pictionary
+Group 6: I want to play Monopoly, and I need 2 dice for that. This is game 3
+Group 7: I want to play Pictionary, and I need 1 dice for that. This is game 4
+Front Desk: Before loans, I have 1 dice
+Front Desk: Loaning out 1 dice.
+Group 7: Starting my game of Pictionary
+Group 8: We have finished our game of Pictionary and are returning 1 dice
+Group 1: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 5 dice
+Front Desk: Loaning out 4 dice.
+Group 2: Starting my game of Backgammon
+Group 7: We have finished our game of Pictionary and are returning 1 dice
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 2 dice.
+Group 6: Starting my game of Monopoly
+Group 5: We have finished our game of Monopoly and are returning 2 dice
+Group 7: I want to play Pictionary, and I need 1 dice for that. This is game 5
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 1 dice.
+Group 7: Starting my game of Pictionary
+Group 8: I want to play Pictionary, and I need 1 dice for that. This is game 4
+Front Desk: Before loans, I have 1 dice
+Front Desk: Loaning out 1 dice.
+Group 8: Starting my game of Pictionary
+Group 5: I want to play Monopoly, and I need 2 dice for that. This is game 3
+Group 1: I want to play Backgammon, and I need 4 dice for that. This is game 3
+Group 2: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 4 dice
+Front Desk: Loaning out 4 dice.
+Group 1: Starting my game of Backgammon
+Group 6: We have finished our game of Monopoly and are returning 2 dice
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 2 dice.
+Group 5: Starting my game of Monopoly
+Group 7: We have finished our game of Pictionary and are returning 1 dice
+Group 7: We are done playing and are leaving the parlor.
+
+Group 2: I want to play Backgammon, and I need 4 dice for that. This is game 3
+Group 8: We have finished our game of Pictionary and are returning 1 dice
+Group 6: I want to play Monopoly, and I need 2 dice for that. This is game 4
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 2 dice.
+Group 6: Starting my game of Monopoly
+Group 5: We have finished our game of Monopoly and are returning 2 dice
+Group 8: I want to play Pictionary, and I need 1 dice for that. This is game 5
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 1 dice.
+Group 8: Starting my game of Pictionary
+Group 1: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 5 dice
+Front Desk: Loaning out 4 dice.
+Group 2: Starting my game of Backgammon
+Group 1: I want to play Backgammon, and I need 4 dice for that. This is game 4
+Group 5: I want to play Monopoly, and I need 2 dice for that. This is game 4
+Group 6: We have finished our game of Monopoly and are returning 2 dice
+Front Desk: Before loans, I have 3 dice
+Front Desk: Loaning out 2 dice.
+Group 5: Starting my game of Monopoly
+Group 6: I want to play Monopoly, and I need 2 dice for that. This is game 5
+Group 2: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 5 dice
+Front Desk: Loaning out 4 dice.
+Group 1: Starting my game of Backgammon
+Group 8: We have finished our game of Pictionary and are returning 1 dice
+Group 8: We are done playing and are leaving the parlor.
+
+Front Desk: Before loans, I have 2 dice
+Front Desk: Loaning out 2 dice.
+Group 6: Starting my game of Monopoly
+Group 2: I want to play Backgammon, and I need 4 dice for that. This is game 4
+Group 5: We have finished our game of Monopoly and are returning 2 dice
+Group 1: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 6 dice
+Front Desk: Loaning out 4 dice.
+Group 2: Starting my game of Backgammon
+Group 6: We have finished our game of Monopoly and are returning 2 dice
+Group 6: We are done playing and are leaving the parlor.
+
+Group 5: I want to play Monopoly, and I need 2 dice for that. This is game 5
+Front Desk: Before loans, I have 4 dice
+Front Desk: Loaning out 2 dice.
+Group 5: Starting my game of Monopoly
+Group 1: I want to play Backgammon, and I need 4 dice for that. This is game 5
+Group 2: We have finished our game of Backgammon and are returning 4 dice
+Front Desk: Before loans, I have 6 dice
+Front Desk: Loaning out 4 dice.
+Group 1: Starting my game of Backgammon
+Group 5: We have finished our game of Monopoly and are returning 2 dice
+Group 5: We are done playing and are leaving the parlor.
+
+Group 2: I want to play Backgammon, and I need 4 dice for that. This is game 5
+Front Desk: Before loans, I have 4 dice
+Front Desk: Loaning out 4 dice.
+Group 2: Starting my game of Backgammon
+Group 1: We have finished our game of Backgammon and are returning 4 dice
+Group 1: We are done playing and are leaving the parlor.
+
+Group 2: We have finished our game of Backgammon and are returning 4 dice
+Group 2: We are done playing and are leaving the parlor.
+
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 3: Starting my game of Risk
+Group 3: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 4: Starting my game of Risk
+Group 3: I want to play Risk, and I need 5 dice for that. This is game 2
+Group 4: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 3: Starting my game of Risk
+Group 4: I want to play Risk, and I need 5 dice for that. This is game 3
+Group 3: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 4: Starting my game of Risk
+Group 3: I want to play Risk, and I need 5 dice for that. This is game 3
+Group 4: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Group 4: I want to play Risk, and I need 5 dice for that. This is game 4
+Front Desk: Loaning out 5 dice.
+Group 3: Starting my game of Risk
+Group 3: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 4: Starting my game of Risk
+Group 3: I want to play Risk, and I need 5 dice for that. This is game 4
+Group 4: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 3: Starting my game of Risk
+Group 4: I want to play Risk, and I need 5 dice for that. This is game 5
+Group 3: We have finished our game of Risk and are returning 5 dice
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 4: Starting my game of Risk
+Group 3: I want to play Risk, and I need 5 dice for that. This is game 5
+Group 4: We have finished our game of Risk and are returning 5 dice
+Group 4: We are done playing and are leaving the parlor.
+
+Front Desk: Before loans, I have 8 dice
+Front Desk: Loaning out 5 dice.
+Group 3: Starting my game of Risk
+Group 3: We have finished our game of Risk and are returning 5 dice
+Group 3: We are done playing and are leaving the parlor.
+

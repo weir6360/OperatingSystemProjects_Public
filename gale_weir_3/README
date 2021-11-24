@@ -1,0 +1,10 @@
+README:
+
+Example compiling CLI commands:
+gcc main.c -lpthread
+./a.out
+
+
+
+On compiling there are some warnings, but those are mostly from the sample thread code.
+
